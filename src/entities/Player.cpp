@@ -7,7 +7,8 @@ Player::Player(vec2f scale)
     shape->setFillColor(sf::Color::Green);
     _pos = scaleVector((sf::Vector2f) { 100, 100 }, _scaleFactor);
     shape->setPosition(_pos);
-    _drawables.push_back(shape);
+    _drawable = shape;
+    _transformable = shape;
 }
 
 Player::~Player()

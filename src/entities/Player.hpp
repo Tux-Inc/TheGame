@@ -4,6 +4,8 @@
 #include <Entity.hpp>
 #include <transform.h>
 
+class IEntity;
+
 class Player : public Entity {
     public:
         Player(vec2f scale);
@@ -11,7 +13,6 @@ class Player : public Entity {
         void update(float dt) override;
 
     private:
-        sf::Vector2f _pos;
 };
 
 #endif /* !PLAYER_HPP_ */

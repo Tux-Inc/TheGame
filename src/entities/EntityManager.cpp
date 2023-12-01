@@ -1,8 +1,8 @@
 #include <EntityManager.hpp>
 
-EntityManager::EntityManager()
+EntityManager::EntityManager(vec2f scale)
 {
-    std::cout << "Entity manager created" << std::endl;
+    _scaleFactor = scale;
 }
 
 EntityManager::~EntityManager()
@@ -12,7 +12,6 @@ EntityManager::~EntityManager()
 void EntityManager::addEntity(std::shared_ptr<IEntity> entity)
 {
     _entities.push_back(entity);
-    std::cout << "Added entity to Entity Manager" << std::endl;
 }
 
 void EntityManager::updateEntities(float dt)
@@ -27,4 +26,31 @@ void EntityManager::drawEntities(IRenderer &renderer)
     for (size_t i = 0; i < _entities.size(); i++) {
         _entities[i]->draw(renderer);
     }
+}
+
+void EntityManager::handleEvents(const sf::Event &event)
+{
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Left) {
+            sf::Vector2f pos = getPosition(0);
+            pos.x -= 10 * _scaleFactor.x;
+            setPosition(pos, 0);
+        }
+        if (event.key.code == sf::Keyboard::Right) {
+            sf::Vector2f pos = getPosition(0);
+            pos.x += 10 * _scaleFactor.x;
+            setPosition(pos, 0);
+        }
+    }
+}
+
+sf::Vector2f EntityManager::getPosition(size_t entityId)
+{
+    sf::Vector2f pos = _entities[entityId]->getPosition();
+    return pos;
+}
+
+void EntityManager::setPosition(sf::Vector2f pos, size_t entityId)
+{
+    _entities[entityId]->setPosition(pos);
 }

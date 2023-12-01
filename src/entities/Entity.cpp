@@ -2,14 +2,20 @@
 
 Entity::~Entity()
 {
-    for (const auto &drawable : _drawables) {
-        delete drawable;
-    }
 }
 
 void Entity::draw(IRenderer &renderer)
 {
-    for (size_t i = 0; i < _drawables.size(); i++) {
-        renderer.draw(*_drawables[i]);
-    }
+    renderer.draw(*_drawable);
+}
+
+sf::Vector2f Entity::getPosition() const
+{
+    return _transformable->getPosition();
+}
+
+void Entity::setPosition(sf::Vector2f pos)
+{
+    _pos = pos;
+    _transformable->setPosition(pos);
 }

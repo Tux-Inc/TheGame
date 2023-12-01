@@ -7,15 +7,15 @@
 
 int main(int argc, const char **argv)
 {
-    EntityManager manager;
     IRenderer *renderer = new Sfml();
+    EntityManager manager(renderer->getScaleFactor());
 
     manager.addEntity(std::make_unique<Player>(renderer->getScaleFactor()));
     manager.addEntity(std::make_unique<Enemy>(renderer->getScaleFactor()));
 
     while (renderer->windowIsOpen()) {
 
-        renderer->handleEvents();
+        renderer->handleEvents(manager);
 
         renderer->clear();
 

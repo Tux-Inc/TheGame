@@ -4,6 +4,8 @@
 #include <Entity.hpp>
 #include <transform.h>
 
+class IEntity;
+
 class Enemy : public Entity {
     public:
         Enemy(vec2f scale);
@@ -11,7 +13,6 @@ class Enemy : public Entity {
         void update(float dt) override;
 
     private:
-        sf::Vector2f _pos;
 };
 
 #endif /* !ENEMY_HPP_ */

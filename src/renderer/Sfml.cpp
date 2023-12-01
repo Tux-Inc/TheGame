@@ -1,4 +1,5 @@
 #include <Sfml.hpp>
+#include <iostream>
 
 Sfml::Sfml()
 {
@@ -32,12 +33,13 @@ void Sfml::render()
     _window.display();
 }
 
-void Sfml::handleEvents()
+void Sfml::handleEvents(EntityManager &manager)
 {
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
             _window.close();
         }
+        manager.handleEvents(_event);
     }
 }
 

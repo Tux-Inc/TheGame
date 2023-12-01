@@ -14,6 +14,4 @@ fi
 
 cmake -S $SRC_DIR -G Ninja  -B $BUILD_DIR
 
-ninja
-
 cmake --build $BUILD_DIR

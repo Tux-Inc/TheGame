@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <transform.h>
 
+class IRenderer;
+
 class Sfml : public Renderer {
     public:
         Sfml();
@@ -13,7 +15,7 @@ class Sfml : public Renderer {
         void clear() override;
         void draw(const sf::Drawable &drawable) override;
         void render() override;
-        void handleEvents() override;
+        void handleEvents(EntityManager &manager) override;
         bool windowIsOpen() const override;
         vec2f getScaleFactor() const override;
 
