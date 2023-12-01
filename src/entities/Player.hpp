@@ -6,7 +6,7 @@
 
 class Player: public Entity {
     public:
-        Player();
+        Player(vec2f scale);
         ~Player();
         void update(float dt) override;
     private:

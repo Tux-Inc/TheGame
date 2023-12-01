@@ -1,12 +1,12 @@
-#ifndef IRENDERER_HPP_
-#define IRENDERER_HPP_
+#ifndef RENDERER_HPP_
+#define RENDERER_HPP_
 
-#include <SFML/Graphics.hpp>
-#include <struct.h>
-#include <memory>
+#include <IRenderer.hpp>
 
-class IRenderer {
+class Renderer: public IRenderer {
     public:
+        Renderer() = default;
+        ~Renderer();
         virtual void init() = 0;
         virtual void clear() = 0;
         virtual void draw(const sf::Drawable& drawable) = 0;
@@ -14,7 +14,6 @@ class IRenderer {
         virtual void handleEvents() = 0;
         virtual bool windowIsOpen() const = 0;
         virtual vec2f getScaleFactor() const = 0;
-        virtual ~IRenderer() = default;
 };
 
-#endif /* !IRENDERER_HPP_ */
+#endif /* !RENDERER_HPP_ */

@@ -1,29 +1,27 @@
-/*
-** EPITECH PROJECT, 2023
-** jam
-** File description:
-** Sfml
-*/
-
 #ifndef SFML_HPP_
 #define SFML_HPP_
 
-#include <IRenderer.hpp>
+#include <Renderer.hpp>
 #include <SFML/Graphics.hpp>
+#include <transform.h>
 
-class Sfml: public IRenderer {
+class Sfml: public Renderer {
     public:
         Sfml();
-        ~Sfml();
+        ~Sfml() override;
         void init() override;
         void clear() override;
         void draw(const sf::Drawable& drawable) override;
         void render() override;
         void handleEvents() override;
         bool windowIsOpen() const override;
+        vec2f getScaleFactor() const override;
     private:
         sf::RenderWindow _window;
         sf::Event _event;
+        vec2f _scaleFactor;
+        uint32_t _w;
+        uint32_t _h;
 };
 
 #endif /* !SFML_HPP_ */

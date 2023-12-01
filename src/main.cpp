@@ -9,9 +9,9 @@ int main(int argc, const char** argv) {
 
     EntityManager manager;
     IRenderer *renderer = new Sfml();
-
-    manager.addEntity(std::make_unique<Player>());
-    manager.addEntity(std::make_unique<Enemy>());
+    
+    manager.addEntity(std::make_unique<Player>(renderer->getScaleFactor()));
+    manager.addEntity(std::make_unique<Enemy>(renderer->getScaleFactor()));
 
     while (renderer->windowIsOpen()) {
        

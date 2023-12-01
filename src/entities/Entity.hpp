@@ -9,12 +9,13 @@
 
 class Entity: public IEntity {
     public:
-        Entity();
+        Entity() = default;
         ~Entity();
         virtual void update(float dt) = 0;
         void draw(IRenderer& renderer) override;
     protected:
         std::vector<sf::Drawable *> _drawables;
+        vec2f _scaleFactor;
     private:
 };
 

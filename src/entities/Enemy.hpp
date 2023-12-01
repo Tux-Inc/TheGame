@@ -6,7 +6,7 @@
 
 class Enemy: public Entity {
     public:
-        Enemy();
+        Enemy(vec2f scale);
         ~Enemy();
         void update(float dt) override;
     private:

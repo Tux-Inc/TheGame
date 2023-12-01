@@ -2,7 +2,11 @@
 
 Sfml::Sfml()
 {
-    _window.create(sf::VideoMode(800, 600), "SFML Entity Rendering");
+    _w = sf::VideoMode::getDesktopMode().width;
+    _h = sf::VideoMode::getDesktopMode().height;
+
+    _scaleFactor = getScaleFactor();
+    _window.create(sf::VideoMode(_w, _h), "TheGame");
 }
 
 Sfml::~Sfml()
@@ -40,3 +44,12 @@ bool Sfml::windowIsOpen() const
     return _window.isOpen();
 }
 
+vec2f Sfml::getScaleFactor() const
+{
+    vec2f scale;
+    const float defaultWidth = 1920.0f;
+    const float defaultHeight = 1080.0f;
+    scale.x = static_cast<float>(_w) / defaultWidth;
+    scale.y = static_cast<float>(_h) / defaultHeight;
+    return scale;
+}

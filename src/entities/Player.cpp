@@ -1,11 +1,13 @@
 #include "Player.hpp"
 
-Player::Player()
+Player::Player(vec2f scale)
 {
     std::cout << "Player created" << std::endl;
-    sf::CircleShape* shape = new sf::CircleShape(50);
+    _scaleFactor = scale;
+    sf::CircleShape* shape = new sf::CircleShape(_scaleFactor.x * 50);
     shape->setFillColor(sf::Color::Green);
-    shape->setPosition(100, 100);
+
+    shape->setPosition(scaleVector((sf::Vector2f){100, 100}, _scaleFactor));
     _drawables.push_back(shape);
 }
 

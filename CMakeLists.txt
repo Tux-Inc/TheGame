@@ -37,6 +37,7 @@ set(SRC
     src/entities/Player.cpp
     src/entities/Enemy.cpp
     src/entities/EntityManager.cpp
+    src/renderer/Renderer.cpp
     src/renderer/Sfml.cpp
 )
 
@@ -44,5 +45,5 @@ add_executable(${PROJECT_NAME} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
-target_include_directories(${PROJECT_NAME} PRIVATE src/entities/ src/utils/ src/interfaces src/renderer/)
+target_include_directories(${PROJECT_NAME} PRIVATE src/entities/ src/utils/ src/interfaces src/renderer/ src/common/)
  

@@ -5,9 +5,9 @@
 
 class IEntity {
 public:
+    virtual ~IEntity() {}
     virtual void update(float dt) = 0;
     virtual void draw(IRenderer& renderer) = 0;
-    virtual ~IEntity() {}
 };
 
 #endif /* !IENTITY_HPP_ */

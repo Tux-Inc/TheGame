@@ -1,10 +1,5 @@
 #include "Entity.hpp"
 
-Entity::Entity()
-{
-    std::cout << "Entity created" << std::endl;
-}
-
 Entity::~Entity()
 {
     for (const auto& drawable : _drawables) {
