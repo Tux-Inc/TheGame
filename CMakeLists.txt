@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)  # CMake version check
 
-project(game)   
+project(game)
 
 include(FetchContent)
 
@@ -30,7 +30,7 @@ if(NOT sfml_POPULATED)
 endif()
 
 
-set(SRC 
+set(SRC
     src/main.cpp
     src/utils/transform.cpp
     src/entities/Entity.cpp
@@ -46,4 +46,3 @@ add_executable(${PROJECT_NAME} ${SRC})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
 target_include_directories(${PROJECT_NAME} PRIVATE src/entities/ src/utils/ src/interfaces src/renderer/ src/common/)
- 

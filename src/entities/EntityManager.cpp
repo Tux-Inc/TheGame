@@ -22,7 +22,7 @@ void EntityManager::updateEntities(float dt)
     }
 }
 
-void EntityManager::drawEntities(IRenderer& renderer)
+void EntityManager::drawEntities(IRenderer &renderer)
 {
     for (size_t i = 0; i < _entities.size(); i++) {
         _entities[i]->draw(renderer);

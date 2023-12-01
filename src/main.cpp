@@ -5,11 +5,11 @@
 #include <Sfml.hpp>
 #include <transform.h>
 
-int main(int argc, const char** argv)
+int main(int argc, const char **argv)
 {
     EntityManager manager;
     IRenderer *renderer = new Sfml();
-    
+
     manager.addEntity(std::make_unique<Player>(renderer->getScaleFactor()));
     manager.addEntity(std::make_unique<Enemy>(renderer->getScaleFactor()));
 

@@ -5,13 +5,13 @@
 #include <transform.h>
 
 class Player : public Entity {
-public:
-    Player(vec2f scale);
-    ~Player();
-    void update(float dt) override;
+    public:
+        Player(vec2f scale);
+        ~Player();
+        void update(float dt) override;
 
-private:
-    sf::Vector2f _pos;
+    private:
+        sf::Vector2f _pos;
 };
 
 #endif /* !PLAYER_HPP_ */

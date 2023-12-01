@@ -22,7 +22,7 @@ void Sfml::clear()
     _window.clear(sf::Color::Black);
 }
 
-void Sfml::draw(const sf::Drawable& drawable)
+void Sfml::draw(const sf::Drawable &drawable)
 {
     _window.draw(drawable);
 }

@@ -4,11 +4,12 @@
 #include <Entity.hpp>
 #include <transform.h>
 
-class Enemy: public Entity {
+class Enemy : public Entity {
     public:
         Enemy(vec2f scale);
         ~Enemy();
         void update(float dt) override;
+
     private:
         sf::Vector2f _pos;
 };

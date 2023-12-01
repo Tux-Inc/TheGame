@@ -1,1 +1,4 @@
 BasedOnStyle: WebKit
+IndentAccessModifiers: true
+AccessModifierOffset: 0
+PointerAlignment: Right
