@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.10)  # CMake version check
 
 project(game)   
 
+include(FetchContent)
 
+set(FETCHCONTENT_QUIET FALSE)
 
 set(CMAKE_CXX_STANDARD 14)
 # set(CMAKE_CXX_FLAGS "-g3")
@@ -11,9 +13,22 @@ set(CMAKE_CXX_STANDARD 14)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
+set(SFML_VERSION 2.5.1)
 
+# find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
-find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+FetchContent_Declare(
+    SFML
+    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
+    GIT_TAG        "${SFML_VERSION}"
+)
+
+FetchContent_GetProperties(sfml)
+if(NOT sfml_POPULATED)
+    FetchContent_Populate(sfml)
+    add_subdirectory(${sfml_SOURCE_DIR} ${sfml_BINARY_DIR})
+endif()
+
 
 set(SRC 
     src/main.cpp
