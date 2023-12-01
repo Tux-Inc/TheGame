@@ -1,8 +1,8 @@
 #ifndef PLAYER_HPP_
 #define PLAYER_HPP_
 
-#include <transform.h>
 #include <Entity.hpp>
+#include <transform.h>
 
 class Player: public Entity {
     public:

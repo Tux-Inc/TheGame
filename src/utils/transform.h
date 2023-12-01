@@ -2,7 +2,6 @@
 #define TRANSFORM_H_
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <cstdint>
 #include <struct.h>
 

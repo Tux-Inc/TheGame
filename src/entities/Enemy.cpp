@@ -12,10 +12,8 @@ Enemy::Enemy(vec2f scale)
 
 Enemy::~Enemy()
 {
-
 }
 
 void Enemy::update(float dt)
 {
-
 }

@@ -17,5 +17,4 @@ Player::~Player()
 
 void Player::update(float dt)
 {
-
 }

@@ -2,10 +2,10 @@
 #define ENTITY_HPP_
 
 #include <IEntity.hpp>
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include <iostream>
 #include <memory>
+#include <vector>
 
 class Entity: public IEntity {
     public:
