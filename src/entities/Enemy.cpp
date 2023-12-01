@@ -10,10 +10,8 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-
 }
 
 void Enemy::update(float dt)
 {
-
 }

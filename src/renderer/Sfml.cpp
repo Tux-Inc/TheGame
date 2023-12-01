@@ -9,19 +9,22 @@ Sfml::~Sfml()
 {
 }
 
-void Sfml::init() {
-    
+void Sfml::init()
+{
 }
 
-void Sfml::clear(){
+void Sfml::clear()
+{
     _window.clear(sf::Color::Black);
 }
 
-void Sfml::draw(const sf::Drawable& drawable){
+void Sfml::draw(const sf::Drawable& drawable)
+{
     _window.draw(drawable);
 }
 
-void Sfml::render(){
+void Sfml::render()
+{
     _window.display();
 }
 
@@ -34,9 +37,7 @@ void Sfml::handleEvents()
     }
 }
 
-
 bool Sfml::windowIsOpen() const
 {
     return _window.isOpen();
 }
-
