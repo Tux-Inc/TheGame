@@ -19,8 +19,8 @@ class Player : public Entity {
         Player(vec2f scale);
         ~Player();
         void update(float dt) override;
-        void Player::updatePosition(float dt);
-        void Player::handleEvents(sf::Event event);
+        void updatePosition(float dt);
+        void handleEvents(sf::Event event);
 
     private:
         int _directions;
