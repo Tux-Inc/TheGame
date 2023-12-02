@@ -29,5 +29,7 @@ void Game::updateScene(float dt)
 void Game::handleEvents(sf::Event event)
 {
     std::shared_ptr<IEntity> player = _manager->getEntity(_playerId);
+    std::shared_ptr<IEntity> enemy = _manager->getEntity(_enemyId);
     player->handleEvents(event);
+    enemy->handleEvents(event);
 }

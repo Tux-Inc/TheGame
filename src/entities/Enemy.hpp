@@ -40,6 +40,8 @@ class Enemy : public Entity {
         int _offset;
         bool _moving;
         size_t _spriteId;
+        sf::RectangleShape *_hitbox;
+        size_t _hitboxId;
 };
 
 #endif /* !ENEMY_HPP_ */
