@@ -1,0 +1,255 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: file
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: echo "Some files failed the linting checks!"
+
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         build: cmake
+  #         build-args: -DCMAKE_BUILD_TYPE=Release
+  #         build-dir: build-release
+  #         build-target: all
+
+  #     - name: Fail fast?!
+  #       if: steps.release.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: test
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         build: cmake
+  #         build-args: -DCMAKE_BUILD_TYPE=Debug
+  #         build-dir: build-debug
+  #         build-target: all
+  #         test: ctest
+  #         test-args: -V
+
+  #     - name: Fail fast?!
+  #       if: steps.test.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # coverage:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: coverage
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         build: cmake
+  #         build-args: -DCMAKE_BUILD_TYPE=Debug
+  #         build-dir: build-debug
+  #         build-target: all
+  #         test: ctest
+  #         test-args: -V
+  #         coverage: gcovr
+  #         coverage-args: --exclude-unreachable-branches --exclude-throw-branches --exclude-external --exclude-directories tests --exclude tests --exclude CMakeFiles --exclude build-debug --exclude build-release --exclude build --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clangd --exclude .clang-tidy --exclude .clang-format --exclude .github --exclude .git --exclude .vscode --exclude .vs --exclude .clang
+  #         coverage-dir: build-debug
+  #         coverage-file: coverage.xml
+  #         coverage-xml: true
+  #         coverage-html: true
+  #         coverage-html-dir: coverage-html
+
+  #     - name: Fail fast?!
+  #       if: steps.coverage.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # docs:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: docs
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         docs: doxygen
+  #         docs-args: Doxyfile
+  #         docs-dir: docs
+  #         docs-file: index.html
+  #         docs-html: true
+  #         docs-html-dir: docs-html
+
+  #     - name: Fail fast?!
+  #       if: steps.docs.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: deploy
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         build: cmake
+  #         build-args: -DCMAKE_BUILD_TYPE=Release
+  #         build-dir: build-release
+  #         build-target: all
+  #         deploy: github
+  #         deploy-args: --release --tag v1.0.0 --name "My Release" --description "My Release Description" --assets build-release/my-app
+
+  #     - name: Fail fast?!
+  #       if: steps.deploy.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # release:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         build: cmake
+  #         build-args: -DCMAKE_BUILD_TYPE=Release
+  #         build-dir: build-release
+  #         build-target: all
+  #         release: github
+  #         release-args: --release --tag v1.0.0 --name "My Release" --description "My Release Description" --assets build-release/my-app
+
+  #     - name: Fail fast?!
+  #       if: steps.release.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # publish:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: publish
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         build: cmake
+  #         build-args: -DCMAKE_BUILD_TYPE=Release
+  #         build-dir: build-release
+  #         build-target: all
+  #         publish: github
+  #         publish-args: --release --tag v1.0.0 --name "My Release" --description "My Release Description" --assets build-release/my-app
+
+  #     - name: Fail fast?!
+  #       if: steps.publish.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # clean:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: clean
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         clean: cmake
+  #         clean-args: -DCMAKE_BUILD_TYPE=Release
+  #         clean-dir: build-release
+
+  #     - name: Fail fast?!
+  #       if: steps.clean.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # format:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: format
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         format: clang-format
+  #         format-args: -i -style=file
+  #         format-dir: src
+
+  #     - name: Fail fast?!
+  #       if: steps.format.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # tidy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: tidy
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+  #         tidy: clang-tidy
+  #         tidy-args: -checks=-*,readability-*,-readability-braces-around-statements,-readability-implicit-bool-conversion,-readability-magic-numbers,-readability-named-parameter,-readability-non-const-parameter,-readability-redundant-control-flow,-readability-redundant-declaration,-readability-simplify-boolean-expr,-readability-static-accessed-through-instance,-readability-uppercase-literal-suffix,-readability-use-anyofallof,-readability-use-nullptr,-readability-use-uniqueptr,-readability-use-equals-default,-readability-use-equals-delete,-readability-else-after-return,-readability-function-size,-readability-implicit-bool-cast,-readability-inconsistent-declaration-parameter-name,-readability-misleading-indentation,-readability-redundant-member-init,-readability-simplify-boolean-expr,-readability-static-definition-in-anonymous-namespace,-readability-string-compare,-readability-uniqueptr-delete-release,-readability-uppercase-literal-suffix,-readability-use-anyofallof,-readability-use-nullptr,-readability-use-uniqueptr,-readability-use-equals-default,-readability-use-equals-delete,-readability-else-after-return,-readability-function-size,-readability-implicit-bool-cast,-readability-inconsistent-declaration-parameter-name,-readability-misleading-indentation,-readability-redundant-member-init,-readability-simplify-boolean-expr,-readability-static-definition-in-anonymous-namespace,-readability-string-compare,-readability-uniqueptr-delete-release,-readability-uppercase-literal-suffix,-readability-use-anyofallof,-readability-use-nullptr,-readability-use-uniqueptr,-readability-use-equals-default,-readability-use-equals-delete,-readability-else-after-return,-readability-function-size,-readability-implicit-bool-cast,-readability-inconsistent-declaration-parameter-name,-readability-mis
+  #         tidy-dir: src
+
+  #     - name: Fail fast?!
+  #       if: steps.tidy.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
+
+  # check:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: cpp-linter/cpp-linter-action@v2
+  #       id: check
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         style: file
+  #         thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+
+  #     - name: Fail fast?!
+  #       if: steps.check.outputs.checks-failed > 0
+  #       run: echo "Some files failed the linting checks!"
