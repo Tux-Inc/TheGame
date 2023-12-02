@@ -7,7 +7,10 @@ Enemy::Enemy(vec2f scale)
     _texture->loadFromFile("./assets/img/enemy.png");
     _dir = RIGHT;
 
-    _rect = sf::IntRect({ 0, 128 * _dir, 128, 128 });
+    _offset = 0;
+    _moving = true;
+
+    _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
     _sprite = new sf::Sprite(*_texture);
 
     _pos = scaleVector((sf::Vector2f) { 300, 300 }, _scaleFactor);
@@ -16,9 +19,9 @@ Enemy::Enemy(vec2f scale)
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
     _drawable = _sprite;
     _transformable = _sprite;
-    _velocity.x = 0;
+    _velocity.x = 1;
     _velocity.y = 0;
-    _speed = 3;
+    _speed = 1.5 * _scaleFactor.x;
 }
 
 Enemy::~Enemy()
@@ -27,6 +30,25 @@ Enemy::~Enemy()
 
 void Enemy::update(float dt)
 {
+    sf::Vector2f pos = _transformable->getPosition();
+
+    if (dt > 1 && _moving) {
+
+        if (_offset == 32) {
+            _offset = 0;
+        } else {
+            _offset++;
+        }
+        _rect.left = (_offset / 4) * 128;
+        _sprite->setTextureRect(_rect);
+        sf::Vector2f tmp = scaleVector((sf::Vector2f) { 1920, 1080 }, _scaleFactor);
+        if (pos.x > tmp.x) {
+            pos.x = scaleVector((sf::Vector2f) { -100, 0 }, _scaleFactor).x;
+        } else {
+            pos.x += _velocity.x * dt * _speed;
+        }
+        _transformable->setPosition(pos);
+    }
 }
 
 void Enemy::handleEvents(sf::Event event)
