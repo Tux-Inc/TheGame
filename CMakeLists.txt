@@ -31,16 +31,21 @@ set(SRC
     src/entities/Entity.cpp
     src/entities/Player.cpp
     src/entities/Enemy.cpp
-    src/entities/EntityManager.cpp
     src/renderer/Renderer.cpp
     src/renderer/Sfml.cpp
+    src/manager/EntityManager.cpp
+    src/manager/SceneManager.cpp
+    src/manager/Core.cpp
+    src/manager/Scene.cpp
+    src/manager/Game.cpp
+    src/manager/Menu.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
-target_include_directories(${PROJECT_NAME} PRIVATE src/entities/ src/utils/ src/interfaces src/renderer/ src/common/)
+target_include_directories(${PROJECT_NAME} PRIVATE src/entities/ src/utils/ src/interfaces src/renderer/ src/common/ src/manager/)
 
 # Set Debug flags for your project
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-g3>)

@@ -64,3 +64,8 @@ void EntityManager::setPosition(sf::Vector2f pos, size_t entityId)
 {
     _entities[entityId]->setPosition(pos);
 }
+
+size_t EntityManager::getEntitiesSize() const
+{
+    return _entities.size();
+}

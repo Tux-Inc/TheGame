@@ -5,6 +5,7 @@
 #include <transform.h>
 
 class IEntity;
+class IRenderer;
 
 class Enemy : public Entity {
     public:

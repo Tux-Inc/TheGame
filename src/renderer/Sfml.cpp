@@ -33,13 +33,13 @@ void Sfml::render()
     _window.display();
 }
 
-void Sfml::handleEvents(EntityManager &manager)
+void Sfml::handleEvents(std::shared_ptr<Scene> scene)
 {
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
             _window.close();
         }
-        manager.handleEvents(_event);
+        scene->handleEvents(_event);
     }
 }
 
