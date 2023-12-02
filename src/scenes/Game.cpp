@@ -5,6 +5,7 @@ Game::Game(vec2f scale)
     _manager = new EntityManager(scale);
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
+    _manager->addEntity(std::make_unique<Map>(scale));
     _playerId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<Player>(scale));
     _enemyId = _manager->getEntitiesSize();

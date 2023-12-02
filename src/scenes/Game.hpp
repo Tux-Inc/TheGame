@@ -1,12 +1,14 @@
 #ifndef GAME_HPP_
-#define GAME_HPP_
+    #define GAME_HPP_
 
-#include <Clock.hpp>
-#include <Enemy.hpp>
-#include <Player.hpp>
-#include <Scene.hpp>
+    #include <Map.hpp>
+    #include <Clock.hpp>
+    #include <Enemy.hpp>
+    #include <Scene.hpp>
+    #include <Player.hpp>
 
 class IRenderer;
+
 class Game : public Scene {
     public:
         Game(vec2f scale);
