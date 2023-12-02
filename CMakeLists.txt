@@ -7,15 +7,10 @@ include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
 set(CMAKE_CXX_STANDARD 14)
-# set(CMAKE_CXX_FLAGS "-g3")
-
-# message(STATUS "CXX from ENV: $ENV{CXX}")
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 set(SFML_VERSION 2.5.1)
-
-# find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 FetchContent_Declare(
     SFML
@@ -46,3 +41,14 @@ add_executable(${PROJECT_NAME} ${SRC})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
 target_include_directories(${PROJECT_NAME} PRIVATE src/entities/ src/utils/ src/interfaces src/renderer/ src/common/)
+
+# Set Debug flags for your project
+target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-g3>)
+
+# Set Release flags specifically for SFML library
+set_target_properties(sfml-graphics PROPERTIES
+    CMAKE_BUILD_TYPE Release
+)
+set_target_properties(sfml-audio PROPERTIES
+    CMAKE_BUILD_TYPE Release
+)
