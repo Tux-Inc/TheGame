@@ -4,7 +4,7 @@ Player::Player(vec2f scale)
 {
     _scaleFactor = scale;
     sf::Texture *t = new sf::Texture();
-    t->loadFromFile("./assets/img/bald_man.png");
+    t->loadFromFile("./assets/img/player.png");
     sf::IntRect rect({ 0, 256, 128, 128 });
     sf::Sprite *s = new sf::Sprite(*t);
 
