@@ -8,6 +8,13 @@ class IEntity;
 
 class Player : public Entity {
 
+        enum Walk {
+            UP = 8,
+            LEFT = 9,
+            DOWN = 10,
+            RIGHT = 11
+        };
+
         enum Directions {
             Up = 1 << 0, // 0001
             Down = 1 << 1, // 0010
@@ -24,6 +31,12 @@ class Player : public Entity {
 
     private:
         int _directions;
+        sf::Vector2f _velocity;
+        float _speed;
+        Walk _dir;
+        sf::IntRect _rect;
+        sf::Texture *_texture;
+        sf::Sprite *_sprite;
 };
 
 #endif /* !PLAYER_HPP_ */

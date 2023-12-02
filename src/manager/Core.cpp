@@ -18,7 +18,8 @@ void Core::run()
 void Core::gameLoop()
 {
     while (_renderer->windowIsOpen()) {
-        float dt = _clock.GetElapsedTime();
+
+        float dt = _clock.Tick();
 
         _sceneManager->handleEvents(*_renderer);
 
@@ -29,6 +30,5 @@ void Core::gameLoop()
         _sceneManager->drawScenes(*_renderer);
 
         _renderer->render();
-        _clock.Restart();
     }
 }

@@ -28,7 +28,6 @@ endif()
 set(SRC
     src/main.cpp
     src/utils/transform.cpp
-    src/utils/Clock.cpp
     src/entities/Entity.cpp
     src/entities/Player.cpp
     src/entities/Enemy.cpp
