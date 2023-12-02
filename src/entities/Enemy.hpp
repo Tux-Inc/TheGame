@@ -39,6 +39,7 @@ class Enemy : public Entity {
         sf::Sprite *_sprite;
         int _offset;
         bool _moving;
+        size_t _spriteId;
 };
 
 #endif /* !ENEMY_HPP_ */

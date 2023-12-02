@@ -40,6 +40,9 @@ class Player : public Entity {
         sf::Sprite *_sprite;
         int _offset;
         bool _moving;
+        size_t _spriteId;
+        sf::RectangleShape *_hitbox;
+        size_t _hitboxId;
 };
 
 #endif /* !PLAYER_HPP_ */

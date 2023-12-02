@@ -30,39 +30,39 @@ void EntityManager::drawEntities(IRenderer &renderer)
 
 void EntityManager::handleEvents(const sf::Event &event)
 {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Left) {
-            sf::Vector2f pos = getPosition(0);
-            pos.x -= 10 * _scaleFactor.x;
-            setPosition(pos, 0);
-        }
-        if (event.key.code == sf::Keyboard::Right) {
-            sf::Vector2f pos = getPosition(0);
-            pos.x += 10 * _scaleFactor.x;
-            setPosition(pos, 0);
-        }
-        if (event.key.code == sf::Keyboard::Up) {
-            sf::Vector2f pos = getPosition(0);
-            pos.y -= 10 * _scaleFactor.y;
-            setPosition(pos, 0);
-        }
-        if (event.key.code == sf::Keyboard::Down) {
-            sf::Vector2f pos = getPosition(0);
-            pos.y += 10 * _scaleFactor.y;
-            setPosition(pos, 0);
-        }
-    }
+    // if (event.type == sf::Event::KeyPressed) {
+    //     if (event.key.code == sf::Keyboard::Left) {
+    //         sf::Vector2f pos = getPosition(0);
+    //         pos.x -= 10 * _scaleFactor.x;
+    //         setPosition(pos, 0);
+    //     }
+    //     if (event.key.code == sf::Keyboard::Right) {
+    //         sf::Vector2f pos = getPosition(0);
+    //         pos.x += 10 * _scaleFactor.x;
+    //         setPosition(pos, 0);
+    //     }
+    //     if (event.key.code == sf::Keyboard::Up) {
+    //         sf::Vector2f pos = getPosition(0);
+    //         pos.y -= 10 * _scaleFactor.y;
+    //         setPosition(pos, 0);
+    //     }
+    //     if (event.key.code == sf::Keyboard::Down) {
+    //         sf::Vector2f pos = getPosition(0);
+    //         pos.y += 10 * _scaleFactor.y;
+    //         setPosition(pos, 0);
+    //     }
+    // }
 }
 
 sf::Vector2f EntityManager::getPosition(size_t entityId)
 {
-    sf::Vector2f pos = _entities[entityId]->getPosition();
-    return pos;
+    // sf::Vector2f pos = _entities[entityId]->getPosition();
+    // return pos;
 }
 
 void EntityManager::setPosition(sf::Vector2f pos, size_t entityId)
 {
-    _entities[entityId]->setPosition(pos);
+    // _entities[entityId]->setPosition(pos);
 }
 
 std::shared_ptr<IEntity> EntityManager::getEntity(size_t entityId)

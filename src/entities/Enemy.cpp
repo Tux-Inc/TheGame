@@ -17,8 +17,9 @@ Enemy::Enemy(vec2f scale)
     _sprite->setPosition(_pos);
     _sprite->setTextureRect(_rect);
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
-    _drawable = _sprite;
-    _transformable = _sprite;
+    _spriteId = _drawables.size();
+    _drawables.push_back(_sprite);
+    _transformables.push_back(_sprite);
     _velocity.x = 1;
     _velocity.y = 0;
     _speed = 1.5 * _scaleFactor.x;
@@ -30,7 +31,7 @@ Enemy::~Enemy()
 
 void Enemy::update(float dt)
 {
-    sf::Vector2f pos = _transformable->getPosition();
+    sf::Vector2f pos = _transformables[_spriteId]->getPosition();
 
     if (dt > 1 && _moving) {
 
@@ -47,7 +48,7 @@ void Enemy::update(float dt)
         } else {
             pos.x += _velocity.x * dt * _speed;
         }
-        _transformable->setPosition(pos);
+        _transformables[_spriteId]->setPosition(pos);
     }
 }
 
