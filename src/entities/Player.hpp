@@ -37,6 +37,8 @@ class Player : public Entity {
         sf::IntRect _rect;
         sf::Texture *_texture;
         sf::Sprite *_sprite;
+        int _offset;
+        bool _moving;
 };
 
 #endif /* !PLAYER_HPP_ */
