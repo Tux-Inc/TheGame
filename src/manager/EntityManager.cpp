@@ -70,6 +70,11 @@ std::shared_ptr<IEntity> EntityManager::getEntity(size_t entityId)
     return _entities[entityId];
 }
 
+std::vector<std::shared_ptr<IEntity>> EntityManager::getEntities()
+{
+    return _entities;
+}
+
 size_t EntityManager::getEntitiesSize() const
 {
     return _entities.size();

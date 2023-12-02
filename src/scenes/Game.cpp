@@ -10,6 +10,8 @@ Game::Game(vec2f scale)
     _manager->addEntity(std::make_unique<Player>(scale));
     _enemyId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<Enemy>(scale));
+    _coneId = _manager->getEntitiesSize();
+    _manager->addEntity(std::make_unique<Cone>(scale));
 }
 
 Game::~Game()
@@ -28,8 +30,16 @@ void Game::updateScene(float dt)
 
 void Game::handleEvents(sf::Event event)
 {
-    std::shared_ptr<IEntity> player = _manager->getEntity(_playerId);
-    std::shared_ptr<IEntity> enemy = _manager->getEntity(_enemyId);
-    player->handleEvents(event);
-    enemy->handleEvents(event);
+    std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
+
+    for (auto &&entity : entities) {
+        entity->handleEvents(event);
+    }
+
+    // std::shared_ptr<IEntity> player = _manager->getEntity(_playerId);
+    // std::shared_ptr<IEntity> enemy = _manager->getEntity(_enemyId);
+    // std::shared_ptr<IEntity> cone = _manager->getEntity(_Id);
+    // player->handleEvents(event);
+    // enemy->handleEvents(event);
+    // enemy->handleEvents(event);
 }

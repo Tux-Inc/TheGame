@@ -1,11 +1,12 @@
 #ifndef GAME_HPP_
-    #define GAME_HPP_
+#define GAME_HPP_
 
-    #include <Map.hpp>
-    #include <Clock.hpp>
-    #include <Enemy.hpp>
-    #include <Scene.hpp>
-    #include <Player.hpp>
+#include <Clock.hpp>
+#include <Cone.hpp>
+#include <Enemy.hpp>
+#include <Map.hpp>
+#include <Player.hpp>
+#include <Scene.hpp>
 
 class IRenderer;
 
@@ -20,6 +21,7 @@ class Game : public Scene {
     private:
         size_t _playerId;
         size_t _enemyId;
+        size_t _coneId;
 };
 
 #endif /* !GAME_HPP_ */
