@@ -6,6 +6,9 @@ Player::Player(vec2f scale)
     _texture = new sf::Texture();
     _texture->loadFromFile("./assets/img/player.png");
     _dir = RIGHT;
+    _dirs = std::vector<bool>(4, false);
+    _dirs[_dir - 8] = true;
+
     _offset = 0;
     _moving = false;
 
@@ -20,7 +23,7 @@ Player::Player(vec2f scale)
     _transformable = _sprite;
     _velocity.x = 0;
     _velocity.y = 0;
-    _speed = 3;
+    _speed = 1.5 * _scaleFactor.x;
 }
 
 Player::~Player()
@@ -36,55 +39,66 @@ void Player::handleEvents(sf::Event event)
 {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Up) {
-            _directions |= Up;
-            _velocity.y = -1;
-            _dir = UP;
-            _moving = true;
+            if (!_dirs[2]) {
+                _velocity.y = -1;
+                _dir = UP;
+                _dirs[0] = true;
+                _moving = true;
+            }
         }
         if (event.key.code == sf::Keyboard::Down) {
-            _directions |= Down;
-            _velocity.y = 1;
-            _dir = DOWN;
-            _moving = true;
+            if (!_dirs[0]) {
+                _velocity.y = 1;
+                _dir = DOWN;
+                _dirs[2] = true;
+                _moving = true;
+            }
         }
         if (event.key.code == sf::Keyboard::Left) {
-            _directions |= Left;
-            _dir = LEFT;
-            _moving = true;
-
-            _velocity.x = -1;
+            if (!_dirs[3]) {
+                _dir = LEFT;
+                _moving = true;
+                _dirs[1] = true;
+                _velocity.x = -1;
+            }
         }
         if (event.key.code == sf::Keyboard::Right) {
-            _directions |= Right;
-            _dir = RIGHT;
-            _moving = true;
-
-            _velocity.x = 1;
+            if (!_dirs[1]) {
+                _dir = RIGHT;
+                _moving = true;
+                _dirs[3] = true;
+                _velocity.x = 1;
+            }
         }
     }
     if (event.type == sf::Event::KeyReleased) {
         if (event.key.code == sf::Keyboard::Up) {
             _velocity.y = 0;
-            _velocity.x = 0;
             _directions &= ~Up;
-            _moving = false;
+            _dirs[0] = false;
         }
         if (event.key.code == sf::Keyboard::Down) {
             _directions &= ~Down;
             _velocity.y = 0;
-            _velocity.x = 0;
-            _moving = false;
+            _dirs[2] = false;
         }
         if (event.key.code == sf::Keyboard::Left) {
             _directions &= ~Left;
-            _velocity.y = 0;
             _velocity.x = 0;
-            _moving = false;
+            _dirs[1] = false;
         }
         if (event.key.code == sf::Keyboard::Right) {
             _directions &= ~Right;
-            _velocity.y = 0;
             _velocity.x = 0;
+            _dirs[3] = false;
+        }
+        size_t i = 0;
+        for (; i < _dirs.size(); i++) {
+            if (_dirs[i]) {
+                break;
+            }
+        }
+        if (i == 4) {
             _moving = false;
         }
     }
@@ -94,29 +108,25 @@ void Player::updatePosition(float dt)
 {
     sf::Vector2f pos = _transformable->getPosition();
 
-    _rect.top = _dir * 128;
+    for (size_t i = 0; i < _dirs.size(); i++) {
+        if (_dirs[i]) {
+            _rect.top = (i + 8) * 128;
+            break;
+        }
+    }
 
     _sprite->setTextureRect(_rect);
-    if (dt > 1) {
-        if (_moving) {
-            if (_offset == 32) {
-                _offset = 0;
-            } else {
-                _offset++;
-            }
-            _rect.left = (_offset / 4) * 128;
-            _sprite->setTextureRect(_rect);
+    if (dt > 1 && _moving) {
+
+        if (_offset == 32) {
+            _offset = 0;
+        } else {
+            _offset++;
         }
+        _rect.left = (_offset / 4) * 128;
+        _sprite->setTextureRect(_rect);
         pos.x += _velocity.x * dt * _speed;
         pos.y += _velocity.y * dt * _speed;
-        // if (_directions & Up) ()
-        //     pos.y -= 100 * dt;
-        // if (_directions & Down)
-        //     pos.y += 100 * dt;
-        // if (_directions & Left)
-        //     pos.x -= 100 * dt;
-        // if (_directions & Right)
-        //     pos.x += 100 * dt;
         _transformable->setPosition(pos);
     }
 }

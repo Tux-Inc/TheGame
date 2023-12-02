@@ -17,8 +17,8 @@ class Player : public Entity {
 
         enum Directions {
             Up = 1 << 0, // 0001
-            Down = 1 << 1, // 0010
-            Left = 1 << 2, // 0100
+            Left = 1 << 1, // 0010
+            Down = 1 << 2, // 0100
             Right = 1 << 3, // 1000
         };
 
@@ -34,6 +34,7 @@ class Player : public Entity {
         sf::Vector2f _velocity;
         float _speed;
         Walk _dir;
+        std::vector<bool> _dirs;
         sf::IntRect _rect;
         sf::Texture *_texture;
         sf::Sprite *_sprite;
