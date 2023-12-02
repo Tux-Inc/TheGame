@@ -11,6 +11,11 @@ Menu::~Menu()
 {
 }
 
+void Menu::updateScene(float dt)
+{
+    _manager->updateEntities(dt);
+}
+
 void Menu::drawScene(IRenderer &renderer)
 {
     _manager->drawEntities(renderer);

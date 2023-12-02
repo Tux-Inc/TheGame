@@ -20,6 +20,11 @@ void SceneManager::handleEvents(IRenderer &renderer)
     renderer.handleEvents(_scenes[_currentScene]);
 }
 
+void SceneManager::updateScenes(float dt)
+{
+    _scenes[_currentScene]->updateScene(dt);
+}
+
 void SceneManager::drawScenes(IRenderer &renderer)
 {
     _scenes[_currentScene]->drawScene(renderer);

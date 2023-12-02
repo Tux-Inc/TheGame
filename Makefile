@@ -1,5 +1,5 @@
 all:
-	./build.sh && ./game
+	./build.sh
 
 re:
-	./build.sh && ./game
+	./build.sh

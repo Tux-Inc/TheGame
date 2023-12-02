@@ -3,11 +3,12 @@
 
 Sfml::Sfml()
 {
-    _w = sf::VideoMode::getDesktopMode().width;
-    _h = sf::VideoMode::getDesktopMode().height;
+    _w = sf::VideoMode::getDesktopMode().width / 2;
+    _h = sf::VideoMode::getDesktopMode().height / 2;
 
     _scaleFactor = getScaleFactor();
     _window.create(sf::VideoMode(_w, _h), "TheGame");
+    _window.setFramerateLimit(60);
 }
 
 Sfml::~Sfml()
@@ -38,6 +39,11 @@ void Sfml::handleEvents(std::shared_ptr<Scene> scene)
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
             _window.close();
+        }
+        if (_event.type == sf::Event::KeyPressed) {
+            if (_event.key.code == sf::Keyboard::Escape) {
+                _window.close();
+            }
         }
         scene->handleEvents(_event);
     }

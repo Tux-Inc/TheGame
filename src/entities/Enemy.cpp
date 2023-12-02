@@ -19,3 +19,7 @@ Enemy::~Enemy()
 void Enemy::update(float dt)
 {
 }
+
+void Enemy::handleEvents(sf::Event event)
+{
+}

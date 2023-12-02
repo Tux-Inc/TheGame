@@ -1,6 +1,7 @@
 #ifndef SCENEMANAGER_HPP_
 #define SCENEMANAGER_HPP_
 
+#include <Clock.hpp>
 #include <Game.hpp>
 #include <IRenderer.hpp>
 #include <Menu.hpp>
@@ -19,6 +20,7 @@ class SceneManager {
         SceneManager(vec2f scale);
         ~SceneManager();
         void handleEvents(IRenderer &renderer);
+        void updateScenes(float dt);
         void drawScenes(IRenderer &renderer);
 
     protected:

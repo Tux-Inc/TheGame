@@ -65,6 +65,11 @@ void EntityManager::setPosition(sf::Vector2f pos, size_t entityId)
     _entities[entityId]->setPosition(pos);
 }
 
+std::shared_ptr<IEntity> EntityManager::getEntity(size_t entityId)
+{
+    return _entities[entityId];
+}
+
 size_t EntityManager::getEntitiesSize() const
 {
     return _entities.size();

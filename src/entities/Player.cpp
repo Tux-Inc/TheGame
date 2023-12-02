@@ -27,6 +27,26 @@ void Player::update(float dt)
 
 void Player::handleEvents(sf::Event event)
 {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Up)
+            _directions |= Up;
+        if (event.key.code == sf::Keyboard::Down)
+            _directions |= Down;
+        if (event.key.code == sf::Keyboard::Left)
+            _directions |= Left;
+        if (event.key.code == sf::Keyboard::Right)
+            _directions |= Right;
+    }
+    if (event.type == sf::Event::KeyReleased) {
+        if (event.key.code == sf::Keyboard::Up)
+            _directions &= ~Up;
+        if (event.key.code == sf::Keyboard::Down)
+            _directions &= ~Down;
+        if (event.key.code == sf::Keyboard::Left)
+            _directions &= ~Left;
+        if (event.key.code == sf::Keyboard::Right)
+            _directions &= ~Right;
+    }
 }
 
 void Player::updatePosition(float dt)

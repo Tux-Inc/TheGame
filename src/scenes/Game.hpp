@@ -1,6 +1,7 @@
 #ifndef GAME_HPP_
 #define GAME_HPP_
 
+#include <Clock.hpp>
 #include <Enemy.hpp>
 #include <Player.hpp>
 #include <Scene.hpp>
@@ -10,8 +11,9 @@ class Game : public Scene {
     public:
         Game(vec2f scale);
         ~Game();
+        void updateScene(float dt) override;
         void drawScene(IRenderer &renderer) override;
-        void handleEvents(sf::Event event);
+        void handleEvents(sf::Event event) override;
 
     private:
         size_t _playerId;

@@ -18,13 +18,17 @@ void Core::run()
 void Core::gameLoop()
 {
     while (_renderer->windowIsOpen()) {
+        float dt = _clock.GetElapsedTime();
 
         _sceneManager->handleEvents(*_renderer);
 
         _renderer->clear();
 
+        _sceneManager->updateScenes(dt);
+
         _sceneManager->drawScenes(*_renderer);
 
         _renderer->render();
+        _clock.Restart();
     }
 }

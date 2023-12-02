@@ -20,28 +20,13 @@ void Game::drawScene(IRenderer &renderer)
     _manager->drawEntities(renderer);
 }
 
+void Game::updateScene(float dt)
+{
+    _manager->updateEntities(dt);
+}
+
 void Game::handleEvents(sf::Event event)
 {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Left) {
-            sf::Vector2f pos = _manager->getPosition(_playerId);
-            pos.x -= 10 * _scaleFactor.x;
-            _manager->setPosition(pos, _playerId);
-        }
-        if (event.key.code == sf::Keyboard::Right) {
-            sf::Vector2f pos = _manager->getPosition(_playerId);
-            pos.x += 10 * _scaleFactor.x;
-            _manager->setPosition(pos, _playerId);
-        }
-        if (event.key.code == sf::Keyboard::Up) {
-            sf::Vector2f pos = _manager->getPosition(_playerId);
-            pos.y -= 10 * _scaleFactor.y;
-            _manager->setPosition(pos, _playerId);
-        }
-        if (event.key.code == sf::Keyboard::Down) {
-            sf::Vector2f pos = _manager->getPosition(_playerId);
-            pos.y += 10 * _scaleFactor.y;
-            _manager->setPosition(pos, _playerId);
-        }
-    }
+    std::shared_ptr<IEntity> player = _manager->getEntity(_playerId);
+    player->handleEvents(event);
 }
