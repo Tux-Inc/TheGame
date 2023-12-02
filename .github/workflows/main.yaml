@@ -1,0 +1,80 @@
+name: CD
+
+env:
+  MIRROR_URL: git@github.com:Tux-Inc/TheGame.git
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: file
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: echo "Some files failed the linting checks!"
+
+  build-project:
+    name: Build Project
+    needs: [cpp-linter]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Install Packages
+        run: sudo apt update && sudo apt install cmake build-essential python3-pip libsfml-dev mesa-utils libgl-dev xorg-dev libx11-xcb-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-util-dev libudev-dev --fix-missing libopenal-dev libvorbis-dev libsndfile1-dev
+
+      - name: Export DISPLAY
+        run: export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0 && export LIBGL_ALWAYS_INDIRECT=0 && echo $DISPLAY
+
+      - name: Configure Project
+        uses: threeal/cmake-action@v1.3.0
+        with:
+          generator: Ninja
+          c-compiler: clang
+          cxx-compiler: clang++
+
+      - name: Build Project
+        run: cmake -S ./ -G Ninja -B ./build
+
+      - name: Release Project
+        run: cmake --build ./build --config Release
+
+      - name: Set Tag
+        id: current-datetime
+        run: echo "CURRENT_DATETIME=$(date +'%Y-%m-%d-%H_%M_%S%z')" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        run: |
+          gh release create v${{ steps.current-datetime.outputs.CURRENT_DATETIME }} --title "v${{ steps.current-datetime.outputs.CURRENT_DATETIME }}" --notes "v${{ steps.current-datetime.outputs.CURRENT_DATETIME }}" --target main ./game
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  mirror:
+    name: Mirror repository
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror repository
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ env.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
