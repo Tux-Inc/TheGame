@@ -1,5 +1,8 @@
 name: CD
 
+env:
+  MIRROR_URL: git@github.com:Tux-Inc/TheGame.git
+
 on:
   push:
     branches:
@@ -58,3 +61,21 @@ jobs:
           gh release create v${{ steps.current-datetime.outputs.CURRENT_DATETIME }} --title "v${{ steps.current-datetime.outputs.CURRENT_DATETIME }}" --notes "v${{ steps.current-datetime.outputs.CURRENT_DATETIME }}" --target main ./game
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  mirror:
+    name: Mirror repository
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # - name: Remove .github folder
+      #   run: rm -rf .github
+      - name: Mirror repository
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ env.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
