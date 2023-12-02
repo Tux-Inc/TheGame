@@ -14,8 +14,8 @@ class Game : public Scene {
         void handleEvents(sf::Event event);
 
     private:
-        size_t playerId;
-        size_t enemyId;
+        size_t _playerId;
+        size_t _enemyId;
 };
 
 #endif /* !GAME_HPP_ */

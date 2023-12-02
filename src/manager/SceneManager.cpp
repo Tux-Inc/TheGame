@@ -8,7 +8,7 @@ SceneManager::SceneManager(vec2f scale)
     _scenes.push_back(menu);
     _scenes.push_back(game);
 
-    _currentScene = MENU;
+    _currentScene = GAME;
 }
 
 SceneManager::~SceneManager()
