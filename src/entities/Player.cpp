@@ -4,8 +4,8 @@ Player::Player(vec2f scale)
 {
     _scaleFactor = scale;
     sf::Texture *t = new sf::Texture();
-    t->loadFromFile("./assets/img/Root_Walk.png");
-    sf::IntRect rect({ 0, 128, 64, 64 });
+    t->loadFromFile("./assets/img/Bald_Man.png");
+    sf::IntRect rect({ 0, 256, 128, 128 });
     sf::Sprite *s = new sf::Sprite(*t);
 
     _pos = scaleVector((sf::Vector2f) { 100, 100 }, _scaleFactor);
