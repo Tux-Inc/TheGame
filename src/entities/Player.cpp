@@ -22,4 +22,24 @@ Player::~Player()
 
 void Player::update(float dt)
 {
+    updatePosition(dt);
+}
+
+void Player::handleEvents(sf::Event event)
+{
+}
+
+void Player::updatePosition(float dt)
+{
+    sf::Vector2f pos = _transformable->getPosition();
+
+    if (_directions & Up)
+        pos.y -= 100 * dt;
+    if (_directions & Down)
+        pos.y += 100 * dt;
+    if (_directions & Left)
+        pos.x -= 100 * dt;
+    if (_directions & Right)
+        pos.x += 100 * dt;
+    _transformable->setPosition(pos);
 }
