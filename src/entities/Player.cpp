@@ -20,7 +20,7 @@ Player::Player(vec2f scale)
     _transformable = _sprite;
     _velocity.x = 0;
     _velocity.y = 0;
-    _speed = 3;
+    _speed = 3 * _scaleFactor.x;
 }
 
 Player::~Player()
