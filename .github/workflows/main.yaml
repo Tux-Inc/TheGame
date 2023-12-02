@@ -24,6 +24,7 @@ jobs:
 
   build-project:
     name: Build Project
+    needs: [cpp-linter]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,9 +39,7 @@ jobs:
 
       - name: Install Packages
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y gcc-multilib python3 curl zip unzip
-          sudo apt-get install -y --no-install-recommends libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev libxfixes-dev libgl1-mesa-dev
+          sudo apt-get install -y ibx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev libxfixes-dev libgl1-mesa-dev
 
       - name: Build Project
         run: cmake -S ./ -G Ninja -B ./build
