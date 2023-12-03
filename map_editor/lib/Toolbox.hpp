@@ -15,7 +15,7 @@
 
 class Tile {
     public:
-        enum class Type {
+        enum Type {
             FLOOR,
             WALL,
             OBJECT,
@@ -27,6 +27,12 @@ class Tile {
             _sprite = sprite;
         }
 
+        Tile()
+        {
+            _type = Tile::Type::FLOOR;
+            _sprite = new sf::Sprite();
+        }
+
         ~Tile()
         {
             std::cout << "Tile destructor" << std::endl;
@@ -34,8 +40,10 @@ class Tile {
         }
 
         Type GetType() { return _type; }
+        void SetType(Type type) { _type = type; }
 
         sf::Sprite *GetSprite() { return _sprite; }
+        void SetSprite(sf::Sprite *sprite) { _sprite = sprite; }
 
     protected:
     private:
@@ -113,22 +121,30 @@ class Toolbox {
             _font = new sf::Font();
             if (!_font->loadFromFile(filePath))
                 std::cerr << "Failed to load font" << std::endl;
-            _text = new sf::Text();
-            _text->setFont(*_font);
-            _text->setCharacterSize(24);
-            _text->setFillColor(sf::Color::White);
         }
 
-        void Draw(sf::RenderWindow &window)
+        void CreateText(std::string text, sf::Vector2f position)
+        {
+            sf::Text *textObj = new sf::Text();
+            textObj->setFont(*_font);
+            textObj->setCharacterSize(24);
+            textObj->setFillColor(sf::Color::White);
+            textObj->setString(text);
+            textObj->setPosition(position);
+            _texts.push_back(textObj);
+        }
+
+        // Puts the tiles in the toolbox window without drawing them
+
+        void Setup(sf::RenderWindow &window)
         {
             size_t tileSize = 48;
             float x = 0;
             float y = tileSize;
 
             // Draw walls
-            _text->setString("Walls");
-            _text->setPosition(0, 0 + tileSize / 2);
-            window.draw(*_text);
+            CreateText("Walls", sf::Vector2f(0, 0 + tileSize / 2));
+
             for (auto tile : _tiles) {
                 if (tile->GetType() == Tile::Type::WALL) {
                     if (x + tileSize >= GetWindowWidth(window)) {
@@ -136,7 +152,6 @@ class Toolbox {
                         y += tileSize;
                     }
                     tile->GetSprite()->setPosition(x, y);
-                    window.draw(*tile->GetSprite());
                     x += tileSize;
                 }
             }
@@ -144,18 +159,16 @@ class Toolbox {
             // Draw floors
             x = 0;
             y += tileSize * 2;
-            _text->setString("Floors");
-            _text->setPosition(0, y - tileSize / 2);
-            window.draw(*_text);
+
+            CreateText("Floors", sf::Vector2f(0, y - tileSize / 2));
+
             for (auto tile : _tiles) {
                 if (tile->GetType() == Tile::Type::FLOOR) {
                     if (x + tileSize >= GetWindowWidth(window)) {
-                        std::cout << "x: " << x << std::endl;
                         x = 0;
                         y += tileSize;
                     }
                     tile->GetSprite()->setPosition(x, y);
-                    window.draw(*tile->GetSprite());
                     x += tileSize;
                 }
             }
@@ -163,9 +176,9 @@ class Toolbox {
             // Draw objects
             x = 0;
             y += tileSize * 2;
-            _text->setString("Objects");
-            _text->setPosition(0, y - tileSize / 2);
-            window.draw(*_text);
+
+            CreateText("Objects", sf::Vector2f(0, y - tileSize / 2));
+
             for (auto tile : _tiles) {
                 if (tile->GetType() == Tile::Type::OBJECT) {
                     if (x + tileSize >= GetWindowWidth(window)) {
@@ -173,11 +186,36 @@ class Toolbox {
                         y += tileSize;
                     }
                     tile->GetSprite()->setPosition(x, y);
-                    window.draw(*tile->GetSprite());
                     x += tileSize;
                 }
             }
         }
+
+        void Draw(sf::RenderWindow &window)
+        {
+            for (auto tile : _tiles)
+                window.draw(*tile->GetSprite());
+            for (auto text : _texts)
+                window.draw(*text);
+        }
+
+        Tile *GetSelectedTile() { return _selectedTile; }
+
+        Tile *GetSelectedTileOnClick(sf::RenderWindow &window)
+        {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+            sf::Vector2f mousePositionF(mousePosition.x, mousePosition.y);
+
+            for (auto tile : _tiles) {
+                if (tile->GetSprite()->getGlobalBounds().contains(mousePositionF)) {
+                    _selectedTile = tile;
+                    return tile;
+                }
+            }
+            return nullptr;
+        }
+
+        void SetSelectedTile(Tile *tile) { _selectedTile = tile; }
 
         unsigned int GetWindowWidth(sf::RenderWindow &window) { return window.getSize().x; }
 
@@ -186,7 +224,8 @@ class Toolbox {
         sf::Texture *_spritesheet;
         std::vector<Tile *> _tiles;
         sf::Font *_font;
-        sf::Text *_text;
+        std::vector<sf::Text *> _texts;
+        Tile *_selectedTile;
 };
 
 #endif /* !TOOLBOX_HPP_ */
