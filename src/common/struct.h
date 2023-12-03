@@ -27,11 +27,16 @@
 */
 
 #ifndef STRUCT_H_
-    #define STRUCT_H_
+#define STRUCT_H_
 
 typedef struct vec {
         float x;
         float y;
 } vec2f;
+
+enum SceneId {
+    MENU,
+    GAME
+};
 
 #endif /* !STRUCT_H_ */

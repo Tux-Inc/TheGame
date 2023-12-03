@@ -11,11 +11,6 @@
 
 class SceneManager {
 
-        enum SceneId {
-            MENU,
-            GAME
-        };
-
     public:
         SceneManager(vec2f scale);
         ~SceneManager();

@@ -35,11 +35,4 @@ void Game::handleEvents(sf::Event event)
     for (auto &&entity : entities) {
         entity->handleEvents(event);
     }
-
-    // std::shared_ptr<IEntity> player = _manager->getEntity(_playerId);
-    // std::shared_ptr<IEntity> enemy = _manager->getEntity(_enemyId);
-    // std::shared_ptr<IEntity> cone = _manager->getEntity(_Id);
-    // player->handleEvents(event);
-    // enemy->handleEvents(event);
-    // enemy->handleEvents(event);
 }

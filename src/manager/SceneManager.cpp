@@ -17,7 +17,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::handleEvents(IRenderer &renderer)
 {
-    renderer.handleEvents(_scenes[_currentScene]);
+    renderer.handleEvents(_scenes[_currentScene], _currentScene);
 }
 
 void SceneManager::updateScenes(float dt)

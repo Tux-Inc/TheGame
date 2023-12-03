@@ -34,7 +34,7 @@ void Sfml::render()
     _window.display();
 }
 
-void Sfml::handleEvents(std::shared_ptr<Scene> scene)
+void Sfml::handleEvents(std::shared_ptr<Scene> scene, size_t &currentScene)
 {
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
