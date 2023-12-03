@@ -9,6 +9,8 @@
 #define TOOLBOX_HPP_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -21,21 +23,24 @@ class Tile {
             OBJECT,
         };
 
-        Tile(Type type, sf::Sprite *sprite)
+        Tile(Type type, sf::Sprite *sprite, char tag = 'x')
         {
             _type = type;
             _sprite = sprite;
+            _pos = sf::Vector2f(0, 0);
+            _tag = tag;
         }
 
         Tile()
         {
             _type = Tile::Type::FLOOR;
             _sprite = new sf::Sprite();
+            _pos = sf::Vector2f(0, 0);
+            _tag = 'x';
         }
 
         ~Tile()
         {
-            std::cout << "Tile destructor" << std::endl;
             delete _sprite;
         }
 
@@ -45,10 +50,22 @@ class Tile {
         sf::Sprite *GetSprite() { return _sprite; }
         void SetSprite(sf::Sprite *sprite) { _sprite = sprite; }
 
+        sf::Vector2f GetPosition() { return _pos; }
+        void SetPosition(sf::Vector2f pos)
+        {
+            _pos = pos;
+            _sprite->setPosition(pos);
+        }
+
+        char GetTag() { return _tag; }
+        void SetTag(char tag) { _tag = tag; }
+
     protected:
     private:
         Type _type;
         sf::Sprite *_sprite;
+        sf::Vector2f _pos;
+        char _tag;
 };
 
 class Toolbox {
@@ -104,11 +121,11 @@ class Toolbox {
                 sprite->setTextureRect(sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), tileSize, tileSize));
 
                 if (tokens[0] == "floor")
-                    _tiles.push_back(new Tile(Tile::Type::FLOOR, sprite));
+                    _tiles.push_back(new Tile(Tile::Type::FLOOR, sprite, tokens[3][0]));
                 else if (tokens[0] == "wall")
-                    _tiles.push_back(new Tile(Tile::Type::WALL, sprite));
+                    _tiles.push_back(new Tile(Tile::Type::WALL, sprite, tokens[3][0]));
                 else if (tokens[0] == "object")
-                    _tiles.push_back(new Tile(Tile::Type::OBJECT, sprite));
+                    _tiles.push_back(new Tile(Tile::Type::OBJECT, sprite, tokens[3][0]));
                 else
                     std::cerr << "Invalid tile type" << std::endl;
 

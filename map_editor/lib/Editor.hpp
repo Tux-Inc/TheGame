@@ -18,61 +18,57 @@
 class Layer {
 
     public:
-        Layer()
-        {
-            _type = Tile::Type::FLOOR;
-            _width = 0;
-            _height = 0;
-            _tiles = nullptr;
-        }
-
         Layer(Tile::Type type, size_t width, size_t height)
         {
             _type = type;
             _width = width;
             _height = height;
-            _tiles = new Tile *[_width];
-            for (size_t i = 0; i < _width; i++) {
-                _tiles[i] = new Tile[_height];
-            }
 
-            // Give default tiles to the layer
             for (size_t y = 0; y < _height; y++) {
+                std::vector<Tile *> row;
                 for (size_t x = 0; x < _width; x++) {
-                    _tiles[x][y].SetType(_type);
+                    row.push_back(new Tile(type, new sf::Sprite()));
                 }
+                _tiles.push_back(row);
             }
         }
 
         ~Layer()
         {
-            for (size_t i = 0; i < _width; i++) {
-                delete[] _tiles[i];
+            for (auto row : _tiles) {
+                for (auto tile : row) {
+                    delete tile;
+                }
             }
-            delete[] _tiles;
         }
 
-        Tile **GetTiles() { return _tiles; }
-        void SetTiles(Tile **tiles) { _tiles = tiles; }
+        Tile *GetTile(size_t x, size_t y) { return _tiles[y][x]; }
+        void SetTile(size_t x, size_t y, Tile *tile) { _tiles[y][x] = tile; }
 
-        Tile *GetTile(size_t x, size_t y) { return &_tiles[x][y]; }
-        void SetTile(size_t x, size_t y, Tile *tile) { _tiles[x][y] = *tile; }
+        std::vector<std::vector<Tile *>> GetLayer() { return _tiles; }
 
         Tile::Type GetType() { return _type; }
-        void SetType(Tile::Type type) { _type = type; }
-
         size_t GetWidth() { return _width; }
-        void SetWidth(size_t width) { _width = width; }
-
         size_t GetHeight() { return _height; }
-        void SetHeight(size_t height) { _height = height; }
+        sf::Vector2f GetPosition() { return _pos; }
+
+        void SetPosition(sf::Vector2f pos)
+        {
+            _pos = pos;
+            for (size_t y = 0; y < _height; y++) {
+                for (size_t x = 0; x < _width; x++) {
+                    _tiles[y][x]->SetPosition(sf::Vector2f(pos.x + (x * 16), pos.y + (y * 16)));
+                }
+            }
+        }
 
     protected:
     private:
-        Tile **_tiles;
+        std::vector<std::vector<Tile *>> _tiles;
         Tile::Type _type;
         size_t _width;
         size_t _height;
+        sf::Vector2f _pos;
 };
 
 class Map {
@@ -84,8 +80,7 @@ class Map {
             _layers.push_back(new Layer(Tile::FLOOR, _width, _height));
             _layers.push_back(new Layer(Tile::WALL, _width, _height));
             _layers.push_back(new Layer(Tile::OBJECT, _width, _height));
-
-            // Give default tiles to the map
+            SetMapPosition(50, 50);
         }
 
         ~Map()
@@ -94,36 +89,40 @@ class Map {
                 delete layer;
         }
 
-        void SetTile(size_t x, size_t y, Tile *tile)
+        void SetBackground(sf::Vector2f &pos)
+        {
+            _background = new sf::RectangleShape(sf::Vector2f(_width * 12, _height * 12));
+            _background->setFillColor(sf::Color(30, 30, 30));
+            _background->setPosition(pos);
+        }
+
+        void SetTile(size_t x, size_t y, Tile *tile, Tile::Type layerType)
         {
             for (auto layer : _layers) {
-                if (layer->GetType() == tile->GetType()) {
+                if (layer->GetType() == layerType) {
                     layer->SetTile(x, y, tile);
                 }
             }
         }
 
+        void SetMapPosition(unsigned int x, unsigned int y)
+        {
+            sf::Vector2f pos(x, y);
+            SetBackground(pos);
+            for (auto layer : _layers) {
+                layer->SetPosition(pos);
+            }
+        }
+
         void Draw(sf::RenderWindow &window)
         {
-            size_t draw_x = 0;
-            size_t draw_y = 0;
-            size_t tileSize = 48;
-            size_t window_w = window.getSize().x;
-
+            window.draw(*_background);
             for (auto layer : _layers) {
                 for (size_t y = 0; y < layer->GetHeight(); y++) {
                     for (size_t x = 0; x < layer->GetWidth(); x++) {
-                        if (draw_x + tileSize >= window_w) {
-                            draw_x = 0;
-                            draw_y += tileSize;
-                        }
-                        layer->GetTile(x, y)->GetSprite()->setPosition(draw_x, draw_y);
                         window.draw(*layer->GetTile(x, y)->GetSprite());
-                        draw_x += tileSize;
                     }
                 }
-                draw_x = 0;
-                draw_y = 0;
             }
         }
 
@@ -132,17 +131,11 @@ class Map {
         std::vector<Layer *> _layers;
         size_t _width;
         size_t _height;
+        sf::RectangleShape *_background;
 };
 
 class Editor {
     public:
-        enum class TileType {
-            FLOOR,
-            WALL,
-            SPAWN,
-            EXIT,
-        };
-
         Editor()
         {
             sf::Vector2i mapWindowPosition(100, 200);
@@ -156,13 +149,17 @@ class Editor {
 
             _toolbox.Setup(_toolWindow);
 
-            _map = new Map(90, 20);
+            _map = new Map(90, 24);
+            _map->SetMapPosition(0, 0);
 
             std::cout << "Map window position: " << mapWindowPosition.x << ", " << mapWindowPosition.y << std::endl;
             std::cout << "Tool window position: " << _toolWindow.getPosition().x << ", " << _toolWindow.getPosition().y << std::endl;
         }
 
-        ~Editor() { }
+        ~Editor()
+        {
+            delete _map;
+        }
 
         void SetupWindow(sf::RenderWindow &window, sf::VideoMode mode, std::string title, sf::Uint32 style = sf::Style::Default)
         {
