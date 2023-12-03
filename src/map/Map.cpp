@@ -11,6 +11,7 @@ Map::Map(vec2f scale)
     t->loadFromFile("./assets/img/map_futuristique.png");
 
     std::ifstream inputFile(path);
+    _direction = IDLE;
 
     for (int y = 0; std::getline(inputFile, line); y++) {
         for (int x = 0; line[x]; x++) {
@@ -46,5 +47,9 @@ void Map::update(float dt)
 }
 
 void Map::handleEvents(sf::Event event)
+{
+}
+
+void Map::action(ActionType action, Direction direction)
 {
 }

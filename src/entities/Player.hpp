@@ -28,12 +28,14 @@ class Player : public Entity {
         void update(float dt) override;
         void updatePosition(float dt);
         void handleEvents(sf::Event event);
+        void action(ActionType action, Direction direction) override;
 
     private:
         int _directions;
         sf::Vector2f _velocity;
         float _speed;
         Walk _dir;
+        Walk _dirWhenCollide;
         std::vector<bool> _dirs;
         sf::IntRect _rect;
         sf::Texture *_texture;
@@ -41,8 +43,8 @@ class Player : public Entity {
         int _offset;
         bool _moving;
         size_t _spriteId;
-        sf::RectangleShape *_hitbox;
-        size_t _hitboxId;
+        bool _walking;
+        std::vector<bool> _actions;
 };
 
 #endif /* !PLAYER_HPP_ */
