@@ -74,6 +74,13 @@ class Toolbox {
         Toolbox()
         {
             std::cout << "Toolbox constructor" << std::endl;
+            _selectedTile = nullptr;
+
+            _selectedTileRect = new sf::RectangleShape(sf::Vector2f(48, 48));
+            _selectedTileRect->setFillColor(sf::Color::Transparent);
+            _selectedTileRect->setOutlineThickness(2);
+            _selectedTileRect->setOutlineColor(sf::Color::White);
+
             LoadSpritesheet("../assets/img/map_futuristique.png");
             LoadSprites("config.me");
             LoadFont("../assets/fonts/font.ttf");
@@ -151,15 +158,13 @@ class Toolbox {
             _texts.push_back(textObj);
         }
 
-        // Puts the tiles in the toolbox window without drawing them
-
         void Setup(sf::RenderWindow &window)
         {
             size_t tileSize = 48;
             float x = 0;
             float y = tileSize;
 
-            // Draw walls
+            // Setup walls
             CreateText("Walls", sf::Vector2f(0, 0 + tileSize / 2));
 
             for (auto tile : _tiles) {
@@ -173,7 +178,7 @@ class Toolbox {
                 }
             }
 
-            // Draw floors
+            // Setup floors
             x = 0;
             y += tileSize * 2;
 
@@ -190,7 +195,7 @@ class Toolbox {
                 }
             }
 
-            // Draw objects
+            // Setup objects
             x = 0;
             y += tileSize * 2;
 
@@ -214,11 +219,16 @@ class Toolbox {
                 window.draw(*tile->GetSprite());
             for (auto text : _texts)
                 window.draw(*text);
+
+            // Draw outlined selected tile
+            if (_selectedTile != nullptr) {
+                window.draw(*_selectedTileRect);
+            }
         }
 
         Tile *GetSelectedTile() { return _selectedTile; }
 
-        Tile *GetSelectedTileOnClick(sf::RenderWindow &window)
+        void UpdateSelectedTileOnClick(sf::RenderWindow &window)
         {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             sf::Vector2f mousePositionF(mousePosition.x, mousePosition.y);
@@ -226,10 +236,9 @@ class Toolbox {
             for (auto tile : _tiles) {
                 if (tile->GetSprite()->getGlobalBounds().contains(mousePositionF)) {
                     _selectedTile = tile;
-                    return tile;
+                    _selectedTileRect->setPosition(tile->GetSprite()->getPosition());
                 }
             }
-            return nullptr;
         }
 
         void SetSelectedTile(Tile *tile) { _selectedTile = tile; }
@@ -243,6 +252,7 @@ class Toolbox {
         sf::Font *_font;
         std::vector<sf::Text *> _texts;
         Tile *_selectedTile;
+        sf::RectangleShape *_selectedTileRect;
 };
 
 #endif /* !TOOLBOX_HPP_ */

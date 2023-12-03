@@ -18,19 +18,39 @@
 class Layer {
 
     public:
-        Layer(Tile::Type type, size_t width, size_t height)
+        Layer(Tile::Type type, size_t width, size_t height, std::string filePath)
         {
             _type = type;
             _width = width;
             _height = height;
 
-            for (size_t y = 0; y < _height; y++) {
-                std::vector<Tile *> row;
-                for (size_t x = 0; x < _width; x++) {
-                    row.push_back(new Tile(type, new sf::Sprite()));
+            _tiles = FileToTiles(filePath);
+            _texture.loadFromFile("../assets/img/map_futuristique.png");
+            if (!_texture.loadFromFile("../assets/img/map_futuristique.png"))
+                std::cout << "Error loading texture" << std::endl;
+        }
+
+        std::vector<std::vector<Tile *>> FileToTiles(std::string filePath)
+        {
+            std::vector<std::vector<Tile *>> tiles;
+            std::ifstream file(filePath);
+
+            if (file.is_open()) {
+                std::string line;
+                while (getline(file, line)) {
+                    std::vector<Tile *> row;
+                    for (char c : line) {
+                        Tile *tile = new Tile(Tile::Type::FLOOR, new sf::Sprite(), c);
+                        tile->GetSprite()->setTexture(_texture, false);
+                        tile->GetSprite()->setTextureRect(sf::IntRect(0, 0, 48, 48));
+                        tile->GetSprite()->setScale(0.25f, 0.25f);
+                        row.push_back(tile);
+                    }
+                    tiles.push_back(row);
                 }
-                _tiles.push_back(row);
             }
+            file.close();
+            return tiles;
         }
 
         ~Layer()
@@ -55,10 +75,13 @@ class Layer {
         void SetPosition(sf::Vector2f pos)
         {
             _pos = pos;
-            for (size_t y = 0; y < _height; y++) {
-                for (size_t x = 0; x < _width; x++) {
-                    _tiles[y][x]->SetPosition(sf::Vector2f(pos.x + (x * 16), pos.y + (y * 16)));
+            for (auto row : _tiles) {
+                for (auto tile : row) {
+                    tile->SetPosition(pos);
+                    pos.x += 12;
                 }
+                pos.x = _pos.x;
+                pos.y += 12;
             }
         }
 
@@ -69,6 +92,7 @@ class Layer {
         size_t _width;
         size_t _height;
         sf::Vector2f _pos;
+        sf::Texture _texture;
 };
 
 class Map {
@@ -77,9 +101,9 @@ class Map {
         {
             _width = width;
             _height = height;
-            _layers.push_back(new Layer(Tile::FLOOR, _width, _height));
-            _layers.push_back(new Layer(Tile::WALL, _width, _height));
-            _layers.push_back(new Layer(Tile::OBJECT, _width, _height));
+            _layers.push_back(new Layer(Tile::FLOOR, _width, _height, "../assets/maps/map1/layers1"));
+            _layers.push_back(new Layer(Tile::WALL, _width, _height, "../assets/maps/map1/layers2"));
+            _layers.push_back(new Layer(Tile::OBJECT, _width, _height, "../assets/maps/map1/layers3"));
             SetMapPosition(50, 50);
         }
 
@@ -116,7 +140,7 @@ class Map {
 
         void Draw(sf::RenderWindow &window)
         {
-            window.draw(*_background);
+            // window.draw(*_background);
             for (auto layer : _layers) {
                 for (size_t y = 0; y < layer->GetHeight(); y++) {
                     for (size_t x = 0; x < layer->GetWidth(); x++) {
@@ -129,6 +153,7 @@ class Map {
     protected:
     private:
         std::vector<Layer *> _layers;
+        std::vector<std::string> _tags;
         size_t _width;
         size_t _height;
         sf::RectangleShape *_background;
@@ -186,7 +211,7 @@ class Editor {
                 }
                 if (_event.type == sf::Event::MouseButtonPressed) {
                     if (_event.mouseButton.button == sf::Mouse::Left) {
-                        _toolbox.GetSelectedTileOnClick(window);
+                        _toolbox.UpdateSelectedTileOnClick(window);
                     }
                 }
             }

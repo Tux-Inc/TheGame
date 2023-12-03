@@ -6,7 +6,7 @@ OBJ			=	$(SRC:.cpp=.o)
 
 LDLIBS		=	-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-CXXFLAGS	=	-Wall -Wextra -std=c++11 -I./lib
+CXXFLAGS	=	-Wall -Wextra -std=c++11 -I./lib -g3
 
 all: 		$(NAME)
 
