@@ -11,16 +11,12 @@ Map::Map(vec2f scale)
     t->loadFromFile("./assets/img/map_futuristique.png");
 
     std::ifstream inputFile(path);
-    std::cout << "Loading map..." << std::endl;
 
     for (int y = 0; std::getline(inputFile, line); y++) {
-        std::cout << line << std::endl;
         for (int x = 0; line[x]; x++) {
             sf::IntRect rect({ 0, 0, 48, 48 });
             auto *s = new sf::Sprite(*t);
             _pos = scaleVector((sf::Vector2f) { static_cast<float>(x * 48), static_cast<float>(y * 48) }, _scaleFactor);
-            // _drawable = s;
-            // _transformable = s;
             switch (line[x]) {
             case '.':
                 rect = { 0, 0, 48, 48 };
