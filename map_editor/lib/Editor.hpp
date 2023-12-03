@@ -35,6 +35,13 @@ class Layer {
             for (size_t i = 0; i < _width; i++) {
                 _tiles[i] = new Tile[_height];
             }
+
+            // Give default tiles to the layer
+            for (size_t y = 0; y < _height; y++) {
+                for (size_t x = 0; x < _width; x++) {
+                    _tiles[x][y].SetType(_type);
+                }
+            }
         }
 
         ~Layer()
