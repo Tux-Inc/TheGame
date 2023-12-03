@@ -5,8 +5,10 @@ Cone::Cone(vec2f scale)
     _scaleFactor = scale;
     _texture = new sf::Texture();
     _texture->loadFromFile("./assets/img/map_futuristique.png");
+    _direction = IDLE;
 
     _debug = false;
+    _collides = true;
 
     _rect = sf::IntRect({ 1399, 1010, 36, 45 });
     _sprite = new sf::Sprite(*_texture);
@@ -51,4 +53,8 @@ void Cone::handleEvents(sf::Event event)
             }
         }
     }
+}
+
+void Cone::action(ActionType action, Direction direction)
+{
 }

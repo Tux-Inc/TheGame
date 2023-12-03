@@ -28,6 +28,7 @@ class Enemy : public Entity {
         ~Enemy();
         void update(float dt) override;
         void handleEvents(sf::Event event);
+        void action(ActionType action, Direction direction) override;
 
     private:
         int _directions;
@@ -40,8 +41,7 @@ class Enemy : public Entity {
         int _offset;
         bool _moving;
         size_t _spriteId;
-        sf::RectangleShape *_hitbox;
-        size_t _hitboxId;
+        bool _walking;
 };
 
 #endif /* !ENEMY_HPP_ */

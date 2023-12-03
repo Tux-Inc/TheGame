@@ -14,6 +14,7 @@ class Map : public Entity {
         void createMap(char *path);
         void update(float dt) override;
         void handleEvents(sf::Event event) override;
+        void action(ActionType action, Direction direction) override;
 
     private:
         std::vector<size_t> _tileIds;
