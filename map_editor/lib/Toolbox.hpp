@@ -89,6 +89,9 @@ class Toolbox {
         ~Toolbox()
         {
             std::cout << "Toolbox destructor" << std::endl;
+            delete _spritesheet;
+            delete _font;
+            delete _selectedTileRect;
             for (auto tile : _tiles)
                 delete tile;
         }

@@ -138,9 +138,14 @@ class Map {
             }
         }
 
+        sf::Vector2f GetMapPosition()
+        {
+            return _layers[0]->GetPosition();
+        }
+
         void Draw(sf::RenderWindow &window)
         {
-            // window.draw(*_background);
+            window.draw(*_background);
             for (auto layer : _layers) {
                 for (size_t y = 0; y < layer->GetHeight(); y++) {
                     for (size_t x = 0; x < layer->GetWidth(); x++) {
@@ -149,6 +154,8 @@ class Map {
                 }
             }
         }
+
+        std::vector<Layer *> GetLayers() { return _layers; }
 
     protected:
     private:
@@ -213,8 +220,33 @@ class Editor {
                     if (_event.mouseButton.button == sf::Mouse::Left) {
                         _toolbox.UpdateSelectedTileOnClick(window);
                     }
+                    if (_event.mouseButton.button == sf::Mouse::Right) {
+                        ReplaceTileWithToolboxTile(window);
+                    }
                 }
             }
+        }
+
+        void ReplaceTileWithToolboxTile(sf::RenderWindow &window)
+        {
+            if (_toolbox.GetSelectedTile() == nullptr)
+                return;
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            sf::Vector2f mapPos = _map->GetMapPosition();
+            sf::Vector2f tilePos = sf::Vector2f(mousePos.x - mapPos.x, mousePos.y - mapPos.y);
+            size_t tileSize = 12;
+            size_t x = tilePos.x / tileSize;
+            size_t y = tilePos.y / tileSize;
+            Tile *tile = _toolbox.GetSelectedTile();
+            std::cout << "Replacing tile at " << x << ", " << y << std::endl;
+            if (tile->GetType() == Tile::Type::WALL)
+                _map->GetLayers()[1]->SetTile(x, y, tile);
+            else if (tile->GetType() == Tile::Type::FLOOR)
+                _map->GetLayers()[0]->SetTile(x, y, tile);
+            else if (tile->GetType() == Tile::Type::OBJECT)
+                _map->GetLayers()[2]->SetTile(x, y, tile);
+            else
+                std::cerr << "Invalid tile type" << std::endl;
         }
 
         void Run()
