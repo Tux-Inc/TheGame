@@ -25,6 +25,19 @@ void Game::drawScene(IRenderer &renderer)
 
 void Game::updateScene(float dt)
 {
+    std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
+
+    Direction dir = _manager->collision(entities[_playerId], entities[_coneId]);
+    if (dir != IDLE) {
+        _manager->action(_playerId, STOP_MOVE, dir);
+    }
+    dir = _manager->collision(entities[_playerId], entities[_enemyId]);
+    if (dir != IDLE) {
+        _manager->action(_playerId, STOP_MOVE, dir);
+        _manager->action(_enemyId, STOP_MOVE, dir);
+    } else {
+        _manager->action(_enemyId, START_MOVE, dir);
+    }
     _manager->updateEntities(dt);
 }
 

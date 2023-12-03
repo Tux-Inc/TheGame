@@ -29,6 +29,8 @@
 #ifndef STRUCT_H_
 #define STRUCT_H_
 
+#define MAX_ACTIONS 4
+
 typedef struct vec {
         float x;
         float y;
@@ -37,6 +39,19 @@ typedef struct vec {
 enum SceneId {
     MENU,
     GAME
+};
+
+enum ActionType {
+    STOP_MOVE,
+    START_MOVE
+};
+
+enum Direction {
+    IDLE = 0,
+    UP,
+    LEFT,
+    DOWN,
+    RIGHT
 };
 
 #endif /* !STRUCT_H_ */
