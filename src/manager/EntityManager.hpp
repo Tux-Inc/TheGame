@@ -20,7 +20,10 @@ class EntityManager {
         void drawEntities(IRenderer &renderer);
         void handleEvents(const sf::Event &event);
         void setPosition(sf::Vector2f pos, size_t entityId);
+        std::shared_ptr<IEntity> getEntity(size_t entityId);
+        std::vector<std::shared_ptr<IEntity>> getEntities();
         sf::Vector2f getPosition(size_t entityId);
+        size_t getEntitiesSize() const;
 
     private:
         std::vector<std::shared_ptr<IEntity>> _entities;

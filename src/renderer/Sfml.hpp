@@ -15,7 +15,7 @@ class Sfml : public Renderer {
         void clear() override;
         void draw(const sf::Drawable &drawable) override;
         void render() override;
-        void handleEvents(EntityManager &manager) override;
+        void handleEvents(std::shared_ptr<Scene> scene, size_t &currentScene) override;
         bool windowIsOpen() const override;
         vec2f getScaleFactor() const override;
 

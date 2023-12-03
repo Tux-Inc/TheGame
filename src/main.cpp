@@ -1,27 +1,9 @@
-#include <Enemy.hpp>
-#include <Entity.hpp>
-#include <EntityManager.hpp>
-#include <Player.hpp>
-#include <Sfml.hpp>
-#include <transform.h>
+#include <Core.hpp>
 
 int main(int argc, const char **argv)
 {
-    IRenderer *renderer = new Sfml();
-    EntityManager manager(renderer->getScaleFactor());
+    Core core;
+    core.run();
 
-    manager.addEntity(std::make_unique<Player>(renderer->getScaleFactor()));
-    manager.addEntity(std::make_unique<Enemy>(renderer->getScaleFactor()));
-
-    while (renderer->windowIsOpen()) {
-
-        renderer->handleEvents(manager);
-
-        renderer->clear();
-
-        manager.drawEntities(*renderer);
-
-        renderer->render();
-    }
     return 0;
 }

@@ -13,14 +13,17 @@ class Entity : public IEntity {
         ~Entity();
         virtual void update(float dt) = 0;
         void draw(IRenderer &renderer) override;
-        void setPosition(sf::Vector2f pos) override;
-        sf::Vector2f getPosition() const override;
+        virtual void handleEvents(sf::Event event) = 0;
+        void setPosition(sf::Vector2f pos, size_t assetId) override;
+        sf::Vector2f getPosition(size_t assetId) const override;
 
     protected:
-        sf::Drawable *_drawable;
-        sf::Transformable *_transformable;
+        std::vector<sf::Drawable *> _drawables;
+        std::vector<sf::Transformable *> _transformables;
         vec2f _scaleFactor;
         sf::Vector2f _pos;
+        sf::Vector2f _hitboxPos;
+        bool _debug;
 
     private:
 };
