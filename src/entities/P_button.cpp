@@ -12,6 +12,7 @@ P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos,
     _hover = false;
     _rect = sf::IntRect({ 200, 1050, 350, 150 });
     _sprite = new sf::Sprite(*_texture);
+    _rotate = false;
 
     _clicked = false;
     sf::Vector2f buttonSize = (sf::Vector2f) { _sprite->getGlobalBounds().width, _sprite->getGlobalBounds().height };
@@ -60,6 +61,13 @@ P_button::~P_button()
 
 void P_button::update(float dt)
 {
+    for (size_t i = 0; i < _transformables.size(); i++) {
+        if (_rotate) {
+            _transformables[i]->rotate(2);
+        } else {
+            _transformables[i]->setRotation(0);
+        }
+    }
 }
 
 void P_button::setScene(int scene)
@@ -74,17 +82,13 @@ void P_button::handleEvents(sf::Event event)
             _hover = true;
             _sfText->setFillColor(sf::Color::Cyan);
             _boxBorder->setOutlineColor(sf::Color::Cyan);
-            for (size_t i = 0; i < _transformables.size(); i++) {
-                _transformables[i]->rotate(2);
-            }
+            _rotate = true;
 
         } else {
             _hover = false;
             _sfText->setFillColor(sf::Color::White);
             _boxBorder->setOutlineColor(sf::Color::White);
-            for (size_t i = 0; i < _transformables.size(); i++) {
-                _transformables[i]->setRotation(0);
-            }
+            _rotate = false;
         }
     }
     if (event.type == sf::Event::MouseButtonPressed) {

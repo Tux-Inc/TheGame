@@ -33,6 +33,7 @@ class P_button : public Entity {
         bool _hover;
         sf::RectangleShape *_boxBorder;
         size_t _borderId;
+        bool _rotate;
 };
 
 #endif /* !P_button_HPP_ */
