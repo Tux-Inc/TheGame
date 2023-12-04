@@ -28,6 +28,11 @@ void Game::updateScene(float dt)
     _manager->updateEntities(dt);
 }
 
+void Game::setScene(int scene)
+{
+    *_currentScene = scene;
+}
+
 void Game::handleEvents(sf::Event event)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();

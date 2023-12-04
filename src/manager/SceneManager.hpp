@@ -17,11 +17,13 @@ class SceneManager {
         void handleEvents(IRenderer &renderer);
         void updateScenes(float dt);
         void drawScenes(IRenderer &renderer);
+        void setScene(int scene);
+        size_t getScene();
 
     protected:
     private:
         std::vector<std::shared_ptr<Scene>> _scenes;
-        size_t _currentScene;
+        size_t *_currentScene;
 };
 
 #endif /* !SCENEMANAGER_HPP_ */

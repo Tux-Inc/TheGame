@@ -3,6 +3,7 @@
 
 #include <Clock.hpp>
 #include <Scene.hpp>
+#include <P_button.hpp>
 
 class IRenderer;
 
@@ -13,9 +14,10 @@ class Menu : public Scene {
         void updateScene(float dt) override;
         void drawScene(IRenderer &renderer) override;
         void handleEvents(sf::Event event) override;
+        void setScene(int scene) override;
 
-    protected:
     private:
+        size_t _P_buttonId;
 };
 
 #endif /* !MENU_HPP_ */
