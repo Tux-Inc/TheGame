@@ -10,8 +10,6 @@ MyMusic::MyMusic()
     _music[0]->setVolume(50.0f);
     _music[0]->setLoop(true);
     _music[0]->play();
-    std::cout << "music" << std::endl;
-    std::cout << _music[0]->getStatus() << std::endl;
 }
 
 MyMusic::MyMusic(std::string path, float volume)
@@ -24,8 +22,6 @@ MyMusic::MyMusic(std::string path, float volume)
     _music[0]->setVolume(volume);
     _music[0]->setLoop(true);
     _music[0]->play();
-    std::cout << "music" << std::endl;
-    std::cout << _music[0]->getStatus() << std::endl;
 }
 
 MyMusic::~MyMusic()
