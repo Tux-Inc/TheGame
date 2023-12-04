@@ -7,6 +7,10 @@ editor
 
 #Binaries
 game
+TheGame
+
+#Valgrind
+vgcore.*
 
 # Prerequisites
 *.d

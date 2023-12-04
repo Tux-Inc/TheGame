@@ -8,7 +8,9 @@
 #include <struct.h>
 
 class Scene;
+class MusicManager;
 class EntityManager;
+
 class IRenderer {
     public:
         virtual void init() = 0;
