@@ -8,7 +8,7 @@ SceneManager::SceneManager(vec2f scale)
     _scenes.push_back(menu);
     _scenes.push_back(game);
 
-    *_currentScene = MENU;
+    _currentScene = MENU;
 }
 
 SceneManager::~SceneManager()
@@ -17,25 +17,15 @@ SceneManager::~SceneManager()
 
 void SceneManager::handleEvents(IRenderer &renderer)
 {
-    renderer.handleEvents(_scenes[*_currentScene], *_currentScene);
+    renderer.handleEvents(_scenes[_currentScene], _currentScene);
 }
 
 void SceneManager::updateScenes(float dt)
 {
-    _scenes[*_currentScene]->updateScene(dt);
+    _scenes[_currentScene]->updateScene(dt, _currentScene);
 }
 
 void SceneManager::drawScenes(IRenderer &renderer)
 {
-    _scenes[*_currentScene]->drawScene(renderer);
-}
-
-void SceneManager::setScene(int scene)
-{
-    *_currentScene = scene;
-}
-
-size_t SceneManager::getScene()
-{
-    return *_currentScene;
+    _scenes[_currentScene]->drawScene(renderer);
 }

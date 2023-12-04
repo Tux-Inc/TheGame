@@ -14,10 +14,9 @@ class Game : public Scene {
     public:
         Game(vec2f scale);
         ~Game();
-        void updateScene(float dt) override;
+        void updateScene(float dt, size_t &currentScene) override;
         void drawScene(IRenderer &renderer) override;
-        void handleEvents(sf::Event event) override;
-        void setScene(int scene) override;
+        void handleEvents(sf::Event event, size_t &currentScene) override;
 
     private:
         size_t _playerId;

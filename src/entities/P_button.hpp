@@ -9,10 +9,12 @@ class IRenderer;
 
 class P_button : public Entity {
     public:
-        P_button(vec2f scale);
+        P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos);
+        // P_button(vec2f scale);
         ~P_button();
         void update(float dt) override;
         void handleEvents(sf::Event event);
+        void action(ActionType action, Direction direction) override;
         void setScene(int scene);
 
     private:
@@ -20,11 +22,15 @@ class P_button : public Entity {
         sf::IntRect _rect;
         sf::Texture *_texture;
         sf::Sprite *_sprite;
+        sf::Text *_sfText;
+        sf::Font _font;
+        std::string _text;
         int _offset;
         size_t _P_buttonId;
         sf::RectangleShape *_hitbox;
         size_t _hitboxId;
-        int *_currentScene;
+        size_t _textId;
+        bool _hover;
 };
 
 #endif /* !P_button_HPP_ */

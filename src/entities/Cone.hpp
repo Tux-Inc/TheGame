@@ -8,10 +8,11 @@ class IEntity;
 
 class Cone : public Entity {
     public:
-        Cone(vec2f scale);
+        Cone(vec2f scale, sf::Vector2f pos);
         ~Cone();
         void update(float dt) override;
         void handleEvents(sf::Event event);
+        void action(ActionType action, Direction direction) override;
 
     protected:
     private:
@@ -19,8 +20,6 @@ class Cone : public Entity {
         sf::Texture *_texture;
         sf::Sprite *_sprite;
         size_t _spriteId;
-        sf::RectangleShape *_hitbox;
-        size_t _hitboxId;
 };
 
 #endif /* !CONE_HPP_ */

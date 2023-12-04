@@ -10,10 +10,9 @@ class Scene {
     public:
         Scene() = default;
         virtual ~Scene() = 0;
-        virtual void updateScene(float dt) = 0;
+        virtual void updateScene(float dt, size_t &currentScene) = 0;
         virtual void drawScene(IRenderer &renderer) = 0;
-        virtual void handleEvents(sf::Event event) = 0;
-        virtual void setScene(int scene) = 0;
+        virtual void handleEvents(sf::Event event, size_t &currentScene) = 0;
 
     protected:
         EntityManager *_manager;

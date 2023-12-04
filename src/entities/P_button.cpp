@@ -1,25 +1,38 @@
 #include <P_button.hpp>
 
-P_button::P_button(vec2f scale)
+P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
-    _texture->loadFromFile("./assets/img/menu_sprites.png");
-
+    _texture->loadFromFile("./assets/img/button.png");
+    _direction = IDLE;
+    _debug = false;
+    _collides = true;
+    _text = text;
+    _hover = false;
     _rect = sf::IntRect({ 200, 1050, 350, 150 });
     _sprite = new sf::Sprite(*_texture);
 
-    _pos = scaleVector((sf::Vector2f) { ((float)sf::VideoMode::getDesktopMode().width - _rect.width) / 2, 200 }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { 325, 300 }, _scaleFactor);
-
+    _clicked = false;
+    sf::Vector2f buttonSize = scaleVector({ 244, 65 }, _scaleFactor);
+    _pos = scaleVector((sf::Vector2f) { (float)(centerPos.x - 122), (float)(centerPos.y - 32.5) }, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(centerPos.x - 122), (float)(centerPos.y - 32.5) }, _scaleFactor);
+    _font.loadFromFile("./assets/fonts/font.ttf");
+    _sfText = new sf::Text();
+    _sfText->setFont(_font);
+    _sfText->setFillColor(sf::Color::White);
+    _sfText->setString(text);
+    sf::Vector2f textPos = scaleVector((sf::Vector2f) { (float)(centerPos.x - (_sfText->getGlobalBounds().width / 2)), (float)(centerPos.y - (_sfText->getGlobalBounds().height / 2)) }, _scaleFactor);
+    _sfText->setPosition(textPos);
+    _sfText->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
     _sprite->setPosition(_pos);
-    _sprite->setTextureRect(_rect);
+    _sprite->setTexture(*_texture);
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
-    _hitbox = new sf::RectangleShape((sf::Vector2f) { 340, 150 });
+    _hitbox = new sf::RectangleShape((sf::Vector2f) { 244, 65 });
     _hitbox->setFillColor(sf::Color::Transparent);
     _hitbox->setOutlineColor(sf::Color::Green);
     _hitbox->setOutlineThickness(1);
-    _hitbox->setPosition((sf::Vector2f) {_pos.x + 10, _pos.y});
+    _hitbox->setPosition((sf::Vector2f) { _hitboxPos.x, _hitboxPos.y });
     _hitbox->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
     _P_buttonId = _drawables.size();
     _drawables.push_back(_sprite);
@@ -27,6 +40,9 @@ P_button::P_button(vec2f scale)
     _hitboxId = _drawables.size();
     _drawables.push_back(_hitbox);
     _transformables.push_back(_hitbox);
+    _textId = _drawables.size();
+    _drawables.push_back(_sfText);
+    _transformables.push_back(_sfText);
 }
 
 P_button::~P_button()
@@ -39,14 +55,36 @@ void P_button::update(float dt)
 
 void P_button::setScene(int scene)
 {
-    *_currentScene = scene;
 }
 
 void P_button::handleEvents(sf::Event event)
 {
-    if (event.type == sf::Event::MouseButtonPressed) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-            setScene(GAME);
+    if (event.type == sf::Event::MouseMoved) {
+
+        if (_hitbox->getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
+            _hover = true;
+            _sfText->setFillColor(sf::Color::Cyan);
+        } else {
+            _hover = false;
+            _sfText->setFillColor(sf::Color::White);
         }
     }
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (_hitbox->getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                _clicked = true;
+            }
+        }
+    }
+    if (event.type == sf::Event::MouseButtonReleased) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (_hitbox->getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                _clicked = false;
+            }
+        }
+    }
+}
+
+void P_button::action(ActionType action, Direction direction)
+{
 }

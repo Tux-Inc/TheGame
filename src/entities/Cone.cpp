@@ -1,18 +1,20 @@
 #include <Cone.hpp>
 
-Cone::Cone(vec2f scale)
+Cone::Cone(vec2f scale, sf::Vector2f pos)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
     _texture->loadFromFile("./assets/img/map_futuristique.png");
+    _direction = IDLE;
 
     _debug = false;
+    _collides = true;
 
     _rect = sf::IntRect({ 1399, 1010, 36, 45 });
     _sprite = new sf::Sprite(*_texture);
 
-    _pos = scaleVector((sf::Vector2f) { 1000, 100 }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { 1000, 100 }, _scaleFactor);
+    _pos = scaleVector(pos, _scaleFactor);
+    _hitboxPos = scaleVector(pos, _scaleFactor);
     _sprite->setPosition(_pos);
     _sprite->setTextureRect(_rect);
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x * (float)1.5, _scaleFactor.y * (float)1.5 });
@@ -51,4 +53,8 @@ void Cone::handleEvents(sf::Event event)
             }
         }
     }
+}
+
+void Cone::action(ActionType action, Direction direction)
+{
 }
