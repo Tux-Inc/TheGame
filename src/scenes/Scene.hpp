@@ -2,10 +2,13 @@
 #define SCENE_HPP_
 
 #include <Clock.hpp>
+#include <MusicManager.hpp>
 #include <EntityManager.hpp>
 
-class EntityManager;
 class IRenderer;
+class MusicManager;
+class EntityManager;
+
 class Scene {
     public:
         Scene() = default;
@@ -16,6 +19,7 @@ class Scene {
 
     protected:
         EntityManager *_manager;
+        MusicManager *_musicManager;
         sf::Vector2f _scaleFactor;
 };
 

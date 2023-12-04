@@ -37,8 +37,6 @@ class Entity : public IEntity {
         size_t _hitboxId;
         Direction _direction;
         Direction _prevDir;
-
-    private:
 };
 
 #endif /* !ENTITY_HPP_ */
