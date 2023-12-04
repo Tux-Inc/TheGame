@@ -41,6 +41,7 @@ set(SRC
     src/scenes/Game.cpp
     src/scenes/Menu.cpp
     src/map/Map.cpp
+    src/entities/P_button.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})

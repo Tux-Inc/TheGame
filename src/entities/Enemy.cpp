@@ -1,6 +1,6 @@
 #include <Enemy.hpp>
 
-Enemy::Enemy(vec2f scale)
+Enemy::Enemy(vec2f scale, sf::Vector2f pos)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
@@ -16,8 +16,8 @@ Enemy::Enemy(vec2f scale)
     _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
     _sprite = new sf::Sprite(*_texture);
 
-    _pos = scaleVector((sf::Vector2f) { 300, 300 }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { 332.5, 332.5 }, _scaleFactor);
+    _pos = scaleVector(pos, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(pos.x + 32.5), (float)(pos.y + 32.5) }, _scaleFactor);
 
     _sprite->setPosition(_pos);
     _sprite->setTextureRect(_rect);

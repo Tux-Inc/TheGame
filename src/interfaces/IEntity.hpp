@@ -23,6 +23,7 @@ class IEntity {
         virtual void action(ActionType action, Direction direction) = 0;
         virtual Direction getDirection() const = 0;
         virtual Direction getPreviousDirection() const = 0;
+        virtual bool clicked() const = 0;
 };
 
 #endif /* !IENTITY_HPP_ */

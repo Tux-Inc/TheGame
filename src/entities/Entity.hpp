@@ -23,6 +23,7 @@ class Entity : public IEntity {
         Direction getPreviousDirection() const override;
         sf::Vector2f getHitboxPosition() const;
         sf::Vector2f getPrevHitboxPosition() const;
+        bool clicked() const override;
 
     protected:
         std::vector<sf::Drawable *> _drawables;
@@ -37,6 +38,7 @@ class Entity : public IEntity {
         size_t _hitboxId;
         Direction _direction;
         Direction _prevDir;
+        bool _clicked;
 
     private:
 };

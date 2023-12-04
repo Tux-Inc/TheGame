@@ -2,6 +2,7 @@
 #define MENU_HPP_
 
 #include <Clock.hpp>
+#include <P_button.hpp>
 #include <Scene.hpp>
 
 class IRenderer;
@@ -10,12 +11,12 @@ class Menu : public Scene {
     public:
         Menu(vec2f scale);
         ~Menu();
-        void updateScene(float dt) override;
+        void updateScene(float dt, size_t &currentScene) override;
         void drawScene(IRenderer &renderer) override;
-        void handleEvents(sf::Event event) override;
+        void handleEvents(sf::Event event, size_t &currentScene) override;
 
-    protected:
     private:
+        size_t _P_buttonId;
 };
 
 #endif /* !MENU_HPP_ */

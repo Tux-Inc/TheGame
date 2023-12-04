@@ -93,3 +93,8 @@ sf::Vector2f Entity::getPrevHitboxPosition() const
 {
     return _prevHitboxPos;
 }
+
+bool Entity::clicked() const
+{
+    return _clicked;
+}

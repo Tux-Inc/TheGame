@@ -23,7 +23,7 @@ class Player : public Entity {
         };
 
     public:
-        Player(vec2f scale);
+        Player(vec2f scale, sf::Vector2f pos);
         ~Player();
         void update(float dt) override;
         void updatePosition(float dt);
