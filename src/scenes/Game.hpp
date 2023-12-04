@@ -7,6 +7,7 @@
 #include <Map.hpp>
 #include <Player.hpp>
 #include <Scene.hpp>
+#include <MyMusic.hpp>
 
 class IRenderer;
 

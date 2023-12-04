@@ -3,8 +3,24 @@
 Game::Game(vec2f scale)
 {
     _manager = new EntityManager(scale);
+    _musicManager = new MusicManager(50.0f);
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
+
+    //std::string line;
+    //const std::string path = "./assets/maps/main_game";
+    //std::ifstream inputFile(path);
+    //sf::Texture t;
+    //t.loadFromFile("./assets/img/map_futuristique.png");
+    //for (int y = 0; std::getline(inputFile, line); y++) {
+    //    for (int x = 0; line[x]; x++) {
+    //        _manager->addEntity(std::make_unique<TileMap>(scale, t, line[x], (vec2f) { static_cast<float>(x * 48), static_cast<float>(y * 48) }));
+    //    }
+    //}
+
+    // _musicManager->addMusic(std::make_unique<MyMusic>("./assets/music/megalovania.ogg", 50.0f));
+    sf::Music music;
+    music.openFromFile("./assets/music/megalovania.wav");
     _manager->addEntity(std::make_unique<Map>(scale));
     _playerId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<Player>(scale));
