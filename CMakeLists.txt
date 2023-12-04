@@ -43,6 +43,8 @@ set(SRC
     src/map/Map.cpp
     src/music/MyMusic.cpp
     src/manager/MusicManager.cpp
+    src/sound/MySound.cpp
+    src/manager/SoundManager.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})

@@ -4,6 +4,7 @@ Game::Game(vec2f scale)
 {
     _manager = new EntityManager(scale);
     _musicManager = new MusicManager(50.0f);
+    _soundManager = new SoundManager(50.0f);
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
 
@@ -19,7 +20,7 @@ Game::Game(vec2f scale)
     //}
 
     _musicManager->addMusic(std::make_unique<MyMusic>("./assets/music/megalovania.ogg", 100.0f));
-    _musicManager->addMusic(std::make_unique<MyMusic>("./assets/sound/coin.ogg", 100.0f));
+    _soundManager->addSound(std::make_unique<MySound>("./assets/sound/coin.ogg", 100.0f));
     _manager->addEntity(std::make_unique<Map>(scale));
     _playerId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<Player>(scale));
@@ -36,6 +37,7 @@ Game::~Game()
 void Game::drawScene(IRenderer &renderer)
 {
     _musicManager->playMusics();
+    _soundManager->playSounds();
     _manager->drawEntities(renderer);
 }
 
