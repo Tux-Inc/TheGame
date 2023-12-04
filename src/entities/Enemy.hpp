@@ -24,7 +24,7 @@ class Enemy : public Entity {
         };
 
     public:
-        Enemy(vec2f scale);
+        Enemy(vec2f scale, sf::Vector2f pos);
         ~Enemy();
         void update(float dt) override;
         void handleEvents(sf::Event event);

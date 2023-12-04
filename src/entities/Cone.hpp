@@ -8,7 +8,7 @@ class IEntity;
 
 class Cone : public Entity {
     public:
-        Cone(vec2f scale);
+        Cone(vec2f scale, sf::Vector2f pos);
         ~Cone();
         void update(float dt) override;
         void handleEvents(sf::Event event);

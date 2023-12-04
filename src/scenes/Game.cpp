@@ -23,11 +23,11 @@ Game::Game(vec2f scale)
     _soundManager->addSound(std::make_unique<MySound>("./assets/sound/coin.ogg", 100.0f));
     _manager->addEntity(std::make_unique<Map>(scale));
     _playerId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<Player>(scale));
+    _manager->addEntity(std::make_unique<Player>(scale, (sf::Vector2f) { 100, 100 }));
     _enemyId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<Enemy>(scale));
+    _manager->addEntity(std::make_unique<Enemy>(scale, (sf::Vector2f) { 300, 300 }));
     _coneId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<Cone>(scale));
+    _manager->addEntity(std::make_unique<Cone>(scale, (sf::Vector2f) { 1000, 100 }));
 }
 
 Game::~Game()
@@ -41,7 +41,7 @@ void Game::drawScene(IRenderer &renderer)
     _manager->drawEntities(renderer);
 }
 
-void Game::updateScene(float dt)
+void Game::updateScene(float dt, size_t &currentScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
 
@@ -59,7 +59,7 @@ void Game::updateScene(float dt)
     _manager->updateEntities(dt);
 }
 
-void Game::handleEvents(sf::Event event)
+void Game::handleEvents(sf::Event event, size_t &currentScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
 

@@ -45,6 +45,7 @@ set(SRC
     src/manager/MusicManager.cpp
     src/sound/MySound.cpp
     src/manager/SoundManager.cpp
+    src/entities/P_button.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})

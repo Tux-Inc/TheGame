@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(vec2f scale)
+Player::Player(vec2f scale, sf::Vector2f pos)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
@@ -22,9 +22,9 @@ Player::Player(vec2f scale)
     _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
     _sprite = new sf::Sprite(*_texture);
 
-    _pos = scaleVector((sf::Vector2f) { 100, 100 }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { 132.5, 132.5 }, _scaleFactor);
-    _prevHitboxPos = scaleVector((sf::Vector2f) { 132.5, 132.5 }, _scaleFactor);
+    _pos = scaleVector(pos, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(pos.x + 32.5), (float)(pos.y + 32.5) }, _scaleFactor);
+    _prevHitboxPos = scaleVector((sf::Vector2f) { (float)(pos.x + 32.5), (float)(pos.y + 32.5) }, _scaleFactor);
     _sprite->setPosition(_pos);
     _sprite->setTextureRect(_rect);
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });

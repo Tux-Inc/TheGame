@@ -8,7 +8,7 @@ SceneManager::SceneManager(vec2f scale)
     _scenes.push_back(menu);
     _scenes.push_back(game);
 
-    _currentScene = GAME;
+    _currentScene = MENU;
 }
 
 SceneManager::~SceneManager()
@@ -22,7 +22,7 @@ void SceneManager::handleEvents(IRenderer &renderer)
 
 void SceneManager::updateScenes(float dt)
 {
-    _scenes[_currentScene]->updateScene(dt);
+    _scenes[_currentScene]->updateScene(dt, _currentScene);
 }
 
 void SceneManager::drawScenes(IRenderer &renderer)
