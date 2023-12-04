@@ -31,6 +31,8 @@ class P_button : public Entity {
         size_t _hitboxId;
         size_t _textId;
         bool _hover;
+        sf::RectangleShape *_boxBorder;
+        size_t _borderId;
 };
 
 #endif /* !P_button_HPP_ */

@@ -34,6 +34,12 @@ P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos,
     _hitbox->setOutlineThickness(1);
     _hitbox->setPosition((sf::Vector2f) { _hitboxPos.x, _hitboxPos.y });
     _hitbox->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
+    _boxBorder = new sf::RectangleShape(buttonSize);
+    _boxBorder->setFillColor(sf::Color::Transparent);
+    _boxBorder->setOutlineColor(sf::Color::White);
+    _boxBorder->setOutlineThickness(3);
+    _boxBorder->setPosition((sf::Vector2f) { _hitboxPos.x, _hitboxPos.y });
+    _boxBorder->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
     _P_buttonId = _drawables.size();
     _drawables.push_back(_sprite);
     _transformables.push_back(_sprite);
@@ -43,6 +49,9 @@ P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos,
     _textId = _drawables.size();
     _drawables.push_back(_sfText);
     _transformables.push_back(_sfText);
+    _borderId = _drawables.size();
+    _drawables.push_back(_boxBorder);
+    _transformables.push_back(_boxBorder);
 }
 
 P_button::~P_button()
@@ -64,9 +73,18 @@ void P_button::handleEvents(sf::Event event)
         if (_hitbox->getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
             _hover = true;
             _sfText->setFillColor(sf::Color::Cyan);
+            _boxBorder->setOutlineColor(sf::Color::Cyan);
+            for (size_t i = 0; i < _transformables.size(); i++) {
+                _transformables[i]->rotate(2);
+            }
+
         } else {
             _hover = false;
             _sfText->setFillColor(sf::Color::White);
+            _boxBorder->setOutlineColor(sf::Color::White);
+            for (size_t i = 0; i < _transformables.size(); i++) {
+                _transformables[i]->setRotation(0);
+            }
         }
     }
     if (event.type == sf::Event::MouseButtonPressed) {
