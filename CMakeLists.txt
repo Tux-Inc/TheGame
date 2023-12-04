@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)  # CMake version check
 
-project(game)
+project(TheGame)
 
 include(FetchContent)
 
@@ -41,6 +41,8 @@ set(SRC
     src/scenes/Game.cpp
     src/scenes/Menu.cpp
     src/map/Map.cpp
+    src/music/MyMusic.cpp
+    src/manager/MusicManager.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
@@ -56,6 +58,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         src/manager/
         src/scenes/
         src/map/
+        src/sound/
+        src/music/
 )
 
 # Set Debug flags for your project
