@@ -17,6 +17,8 @@ class Menu : public Scene {
 
     private:
         size_t _P_buttonId;
+        size_t _dariusLightId;
+        size_t _dariusDarkId;
 };
 
 #endif /* !MENU_HPP_ */

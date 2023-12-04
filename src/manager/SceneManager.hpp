@@ -2,7 +2,8 @@
 #define SCENEMANAGER_HPP_
 
 #include <Clock.hpp>
-#include <Game.hpp>
+#include <DariusDark.hpp>
+#include <DariusLight.hpp>
 #include <IRenderer.hpp>
 #include <Menu.hpp>
 #include <Scene.hpp>

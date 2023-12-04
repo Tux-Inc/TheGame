@@ -9,7 +9,7 @@ class IRenderer;
 
 class P_button : public Entity {
     public:
-        P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos);
+        P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos, const std::string &texturePath);
         // P_button(vec2f scale);
         ~P_button();
         void update(float dt) override;

@@ -1,10 +1,10 @@
 #include <P_button.hpp>
 
-P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos)
+P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos, const std::string &texturePath)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
-    _texture->loadFromFile("./assets/img/button.png");
+    _texture->loadFromFile(texturePath);
     _direction = IDLE;
     _debug = false;
     _collides = true;
@@ -14,9 +14,9 @@ P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos)
     _sprite = new sf::Sprite(*_texture);
 
     _clicked = false;
-    sf::Vector2f buttonSize = scaleVector({ 244, 65 }, _scaleFactor);
-    _pos = scaleVector((sf::Vector2f) { (float)(centerPos.x - 122), (float)(centerPos.y - 32.5) }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { (float)(centerPos.x - 122), (float)(centerPos.y - 32.5) }, _scaleFactor);
+    sf::Vector2f buttonSize = (sf::Vector2f) { _sprite->getGlobalBounds().width, _sprite->getGlobalBounds().height };
+    _pos = scaleVector((sf::Vector2f) { (float)(centerPos.x - (buttonSize.x / 2)), (float)(centerPos.y - (buttonSize.y / 2)) }, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(centerPos.x - (buttonSize.x / 2)), (float)(centerPos.y - (buttonSize.y / 2)) }, _scaleFactor);
     _font.loadFromFile("./assets/fonts/font.ttf");
     _sfText = new sf::Text();
     _sfText->setFont(_font);
@@ -28,7 +28,7 @@ P_button::P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos)
     _sprite->setPosition(_pos);
     _sprite->setTexture(*_texture);
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
-    _hitbox = new sf::RectangleShape((sf::Vector2f) { 244, 65 });
+    _hitbox = new sf::RectangleShape(buttonSize);
     _hitbox->setFillColor(sf::Color::Transparent);
     _hitbox->setOutlineColor(sf::Color::Green);
     _hitbox->setOutlineThickness(1);

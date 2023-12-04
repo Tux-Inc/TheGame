@@ -3,10 +3,12 @@
 SceneManager::SceneManager(vec2f scale)
 {
     std::shared_ptr<Scene> menu = std::make_unique<Menu>(scale);
-    std::shared_ptr<Scene> game = std::make_unique<Game>(scale);
+    std::shared_ptr<Scene> game1 = std::make_unique<DariusLight>(scale);
+    std::shared_ptr<Scene> game2 = std::make_unique<DariusDark>(scale);
 
     _scenes.push_back(menu);
-    _scenes.push_back(game);
+    _scenes.push_back(game1);
+    _scenes.push_back(game2);
 
     _currentScene = MENU;
 }

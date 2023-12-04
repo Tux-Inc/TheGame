@@ -38,7 +38,8 @@ set(SRC
     src/manager/SceneManager.cpp
     src/manager/Core.cpp
     src/scenes/Scene.cpp
-    src/scenes/Game.cpp
+    src/scenes/DariusLight.cpp
+    src/scenes/DariusDark.cpp
     src/scenes/Menu.cpp
     src/map/Map.cpp
     src/music/MyMusic.cpp
