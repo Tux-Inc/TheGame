@@ -18,12 +18,14 @@ class Scene {
         virtual void updateScene(float dt) = 0;
         virtual void drawScene(IRenderer &renderer) = 0;
         virtual void handleEvents(sf::Event event) = 0;
+        virtual void setScene(int scene) = 0;
 
     protected:
         EntityManager *_manager;
         MusicManager *_musicManager;
         SoundManager *_soundManager;
         sf::Vector2f _scaleFactor;
+        int *_currentScene;
 };
 
 #endif /* !SCENE_HPP_ */

@@ -19,6 +19,7 @@ class Game : public Scene {
         void updateScene(float dt) override;
         void drawScene(IRenderer &renderer) override;
         void handleEvents(sf::Event event) override;
+        void setScene(int scene) override;
 
     private:
         size_t _playerId;
