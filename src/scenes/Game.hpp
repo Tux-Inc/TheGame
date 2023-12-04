@@ -8,6 +8,7 @@
 #include <Player.hpp>
 #include <Scene.hpp>
 #include <MyMusic.hpp>
+#include <MySound.hpp>
 
 class IRenderer;
 
