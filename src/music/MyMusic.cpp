@@ -3,27 +3,29 @@
 MyMusic::MyMusic()
 {
     _state.push_back(MyMusicState::STOPPED);
-    sf::Music music;
-    music.openFromFile("./assets/music/megalovania.wav");
-    // if (!music.openFromFile("./assets/music/megalovania.wav"))
-    //     std::cerr << "Error loading music from ./assets/music/megalovania.wav" << std::endl;
-    _music.push_back(&music);
+    sf::Music *music = new sf::Music();
+    if (!music->openFromFile("./assets/music/megalovania.ogg"))
+        std::cerr << "Error loading music from ./assets/music/megalovania.ogg" << std::endl;
+    _music.push_back(music);
     _music[0]->setVolume(50.0f);
-    _music[0]->play();
     _music[0]->setLoop(true);
+    _music[0]->play();
+    std::cout << "music" << std::endl;
+    std::cout << _music[0]->getStatus() << std::endl;
 }
 
 MyMusic::MyMusic(std::string path, float volume)
 {
     _state.push_back(MyMusicState::STOPPED);
-    sf::Music music;
-    music.openFromFile(path);
-    // if (!music.openFromFile(path))
-    //     std::cerr << "Error loading music from " << path << std::endl;
-    _music.push_back(&music);
-    _music[0]->play();
+    sf::Music *music = new sf::Music();
+    if (!music->openFromFile(path))
+        std::cerr << "Error loading music from " << path << std::endl;
+    _music.push_back(music);
     _music[0]->setVolume(volume);
     _music[0]->setLoop(true);
+    _music[0]->play();
+    std::cout << "music" << std::endl;
+    std::cout << _music[0]->getStatus() << std::endl;
 }
 
 MyMusic::~MyMusic()
@@ -32,7 +34,7 @@ MyMusic::~MyMusic()
 
 void MyMusic::play(size_t assetId)
 {
-    if (_music[assetId]->getStatus() == sf::SoundSource::Status::Stopped && _state[assetId] == MyMusicState::PLAYING) {
+    if (_music[assetId]->getStatus() != sf::SoundSource::Status::Playing && _state[assetId] == MyMusicState::PLAYING) {
         _music[assetId]->play();
         _state[assetId] = MyMusicState::PLAYING;
     }
@@ -40,7 +42,7 @@ void MyMusic::play(size_t assetId)
 
 void MyMusic::stop(size_t assetId)
 {
-    if (_music[assetId]->getStatus() == sf::SoundSource::Status::Playing && _state[assetId] == MyMusicState::STOPPED) {
+    if (_music[assetId]->getStatus() != sf::SoundSource::Status::Stopped && _state[assetId] == MyMusicState::STOPPED) {
         _music[assetId]->stop();
         _state[assetId] = MyMusicState::STOPPED;
     }
@@ -48,17 +50,9 @@ void MyMusic::stop(size_t assetId)
 
 void MyMusic::pause(size_t assetId)
 {
-    if (_music[assetId]->getStatus() == sf::SoundSource::Status::Playing && _state[assetId] == MyMusicState::PAUSED) {
+    if (_music[assetId]->getStatus() != sf::SoundSource::Status::Paused && _state[assetId] == MyMusicState::PAUSED) {
         _music[assetId]->pause();
         _state[assetId] = MyMusicState::PAUSED;
-    }
-}
-
-void MyMusic::resume(size_t assetId)
-{
-    if (_music[assetId]->getStatus() == sf::SoundSource::Status::Paused && _state[assetId] == MyMusicState::PLAYING) {
-        _music[assetId]->play();
-        _state[assetId] = MyMusicState::PLAYING;
     }
 }
 
@@ -90,4 +84,9 @@ void MyMusic::changeRelativeToListener(size_t assetId, bool relative)
 void MyMusic::changePosition(size_t assetId, float x, float y, float z)
 {
     _music[assetId]->setPosition(x, y, z);
+}
+
+MyMusic::MyMusicState MyMusic::getStatus(size_t assetId) const
+{
+    return _state[assetId];
 }
