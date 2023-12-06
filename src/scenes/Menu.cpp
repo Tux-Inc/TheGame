@@ -6,14 +6,15 @@ Menu::Menu(vec2f scale)
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
 
-    // _P_buttonId = _manager->getEntitiesSize();
-    // _manager->addEntity(std::make_unique<P_button>(scale, "PLAY", (sf::Vector2f) { (float)1920 / 2, 200 }, "./assets/img/button.png"));
-    sf::Vector2f dariusLightPos = (sf::Vector2f) { (float)((1920 / 8) * 2), (float)(1080 / 2) };
-    sf::Vector2f dariusDarkPos = (sf::Vector2f) { (float)((1920 / 8) * 6), 1080 / 2 };
+    sf::Vector2f dariusLightPos = (sf::Vector2f) { static_cast<float>((1920 / 2 - 400)), static_cast<float>(1080 / 2) };
+    sf::Vector2f dariusDarkPos = (sf::Vector2f) { static_cast<float>((1920 / 2 + 700)), static_cast<float>(1080 / 2) };
+
+    _backgroundId = _manager->getEntitiesSize();
+    _manager->addEntity(std::make_unique<TileSprite>(scale, (sf::Vector2f) {0, 0}, (sf::Vector2f) {1, 1}, "./assets/img/background.png", sf::IntRect({0, 0, 1920, 1080})));
     _dariusLightId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<P_button>(scale, "", dariusLightPos, "./assets/img/dariusLight.png"));
+    _manager->addEntity(std::make_unique<P_button>(scale, "Get Chair", dariusLightPos, "./assets/img/dariusLight.png"));
     _dariusDarkId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<P_button>(scale, "", dariusDarkPos, "./assets/img/dariusDark.png"));
+    _manager->addEntity(std::make_unique<P_button>(scale, "Runner", dariusDarkPos, "./assets/img/dariusDark.png"));
 }
 
 Menu::~Menu()

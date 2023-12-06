@@ -16,6 +16,8 @@ class Entity : public IEntity {
         virtual void handleEvents(sf::Event event) = 0;
         void setPosition(sf::Vector2f pos, size_t assetId) override;
         sf::Vector2f getPosition(size_t assetId) const override;
+        void setRect(sf::IntRect rect, size_t assetId) override;
+        sf::IntRect getRect(size_t assetId) const override;
         Direction intersects(std::shared_ptr<IEntity> other) override;
         sf::RectangleShape &getHitbox() const;
         virtual void action(ActionType action, Direction direction) = 0;

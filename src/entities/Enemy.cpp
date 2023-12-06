@@ -89,16 +89,13 @@ void Enemy::handleEvents(sf::Event event)
 void Enemy::action(ActionType action, Direction direction)
 {
     switch (action) {
-    case STOP_MOVE: {
-        _moving = false;
-        break;
-    }
-    case START_MOVE: {
-        _moving = true;
-        break;
-    }
-
-    default:
-        break;
+        case STOP_MOVE:
+            _moving = false;
+            break;
+        case START_MOVE:
+            _moving = true;
+            break;
+        default:
+            break;
     }
 }

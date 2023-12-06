@@ -18,8 +18,19 @@ sf::Vector2f Entity::getPosition(size_t assetId) const
 
 void Entity::setPosition(sf::Vector2f pos, size_t assetId)
 {
+    // std::cout << "pos: " << pos.x << ", " << pos.y << std::endl;
     _pos = pos;
     _transformables[assetId]->setPosition(pos);
+}
+
+sf::IntRect Entity::getRect(size_t assetId) const
+{
+    return ((sf::Sprite *)_transformables[assetId])->getTextureRect();
+}
+
+void Entity::setRect(sf::IntRect rect, size_t assetId)
+{
+    ((sf::Sprite *)_transformables[assetId])->setTextureRect(rect);
 }
 
 Direction Entity::getDirection() const

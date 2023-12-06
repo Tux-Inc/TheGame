@@ -8,17 +8,6 @@ DariusLight::DariusLight(vec2f scale)
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
 
-    // std::string line;
-    // const std::string path = "./assets/maps/main_game";
-    // std::ifstream inputFile(path);
-    // sf::Texture t;
-    // t.loadFromFile("./assets/img/map_futuristique.png");
-    // for (int y = 0; std::getline(inputFile, line); y++) {
-    //     for (int x = 0; line[x]; x++) {
-    //         _manager->addEntity(std::make_unique<TileMap>(scale, t, line[x], (vec2f) { static_cast<float>(x * 48), static_cast<float>(y * 48) }));
-    //     }
-    // }
-
     _musicManager->addMusic(std::make_unique<MyMusic>("./assets/music/megalovania.ogg", 100.0f));
     _soundManager->addSound(std::make_unique<MySound>("./assets/sound/coin.ogg", 100.0f));
     _manager->addEntity(std::make_unique<Map>(scale));
@@ -26,8 +15,8 @@ DariusLight::DariusLight(vec2f scale)
     _manager->addEntity(std::make_unique<Player>(scale, (sf::Vector2f) { 100, 100 }));
     _enemyId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<Enemy>(scale, (sf::Vector2f) { 300, 300 }));
-    _coneId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<Cone>(scale, (sf::Vector2f) { 1000, 100 }));
+    _tileSpriteId = _manager->getEntitiesSize();
+    _manager->addEntity(std::make_unique<TileSprite>(scale, (sf::Vector2f) { 1000, 100 }));
 }
 
 DariusLight::~DariusLight()
@@ -45,7 +34,7 @@ void DariusLight::updateScene(float dt, size_t &currentScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
 
-    Direction dir = _manager->collision(entities[_playerId], entities[_coneId]);
+    Direction dir = _manager->collision(entities[_playerId], entities[_tileSpriteId]);
     if (dir != IDLE) {
         _manager->action(_playerId, STOP_MOVE, dir);
     }
@@ -66,4 +55,25 @@ void DariusLight::handleEvents(sf::Event event, size_t &currentScene)
     for (auto &&entity : entities) {
         entity->handleEvents(event);
     }
+
+    if (_manager->collision(entities[_playerId], entities[_enemyId]) != IDLE) {
+        currentScene = MENU;
+        this->resetScene();
+    }
+
+    if (_manager->collision(entities[_playerId], entities[_tileSpriteId]) != IDLE) {
+        currentScene = MENU;
+        this->resetScene();
+    }
+}
+
+void DariusLight::resetScene()
+{
+    std::cout << "Resetting scene" << std::endl;
+    std::cout << "Player id: " << _playerId << std::endl;
+    std::cout << "Enemy id: " << _enemyId << std::endl;
+    std::cout << "TileSprite id: " << _tileSpriteId << std::endl;
+    _manager->getEntity(_playerId)->setPosition((sf::Vector2f) { 100, 100 }, _playerId);
+    // _manager->getEntity(_enemyId)->setPosition((sf::Vector2f) { 300, 300 }, _enemyId);
+    // _manager->getEntity(_tileSpriteId)->setPosition((sf::Vector2f) { 1000, 100 }, _tileSpriteId);
 }
