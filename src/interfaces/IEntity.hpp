@@ -16,6 +16,8 @@ class IEntity {
         virtual void handleEvents(sf::Event event) = 0;
         virtual void setPosition(sf::Vector2f pos, size_t assetId) = 0;
         virtual sf::Vector2f getPosition(size_t assetId) const = 0;
+        virtual void setRect(sf::IntRect rect, size_t assetId) = 0;
+        virtual sf::IntRect getRect(size_t assetId) const = 0;
         virtual Direction intersects(std::shared_ptr<IEntity> other) = 0;
         virtual sf::RectangleShape &getHitbox() const = 0;
         virtual sf::Vector2f getHitboxPosition() const = 0;

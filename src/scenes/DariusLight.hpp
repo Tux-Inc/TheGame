@@ -2,7 +2,7 @@
 #define DARIUSLIGHT_HPP_
 
 #include <Clock.hpp>
-#include <Cone.hpp>
+#include <TileSprite.hpp>
 #include <Enemy.hpp>
 #include <Map.hpp>
 #include <MyMusic.hpp>
@@ -19,11 +19,12 @@ class DariusLight : public Scene {
         void updateScene(float dt, size_t &currentScene) override;
         void drawScene(IRenderer &renderer) override;
         void handleEvents(sf::Event event, size_t &currentScene) override;
+        void resetScene();
 
     private:
         size_t _playerId;
         size_t _enemyId;
-        size_t _coneId;
+        size_t _tileSpriteId;
 };
 
 #endif /* !DARIUSLIGHT_HPP_ */

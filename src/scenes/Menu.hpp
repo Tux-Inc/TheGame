@@ -2,8 +2,9 @@
 #define MENU_HPP_
 
 #include <Clock.hpp>
-#include <P_button.hpp>
 #include <Scene.hpp>
+#include <P_button.hpp>
+#include <TileSprite.hpp>
 
 class IRenderer;
 
@@ -16,6 +17,7 @@ class Menu : public Scene {
         void handleEvents(sf::Event event, size_t &currentScene) override;
 
     private:
+        size_t _backgroundId;
         size_t _P_buttonId;
         size_t _dariusLightId;
         size_t _dariusDarkId;

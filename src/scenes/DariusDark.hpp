@@ -1,14 +1,14 @@
 #ifndef DARIUSDARK_HPP_
 #define DARIUSDARK_HPP_
 
-#include <Clock.hpp>
-#include <Cone.hpp>
-#include <Enemy.hpp>
 #include <Map.hpp>
+#include <Scene.hpp>
+#include <Clock.hpp>
+#include <Enemy.hpp>
+#include <Player.hpp>
 #include <MyMusic.hpp>
 #include <MySound.hpp>
-#include <Player.hpp>
-#include <Scene.hpp>
+#include <TileSprite.hpp>
 
 class IRenderer;
 
@@ -23,7 +23,7 @@ class DariusDark : public Scene {
     private:
         size_t _playerId;
         size_t _enemyId;
-        size_t _coneId;
+        size_t _tileSpriteId;
 };
 
 #endif /* !GAME_HPP_ */
