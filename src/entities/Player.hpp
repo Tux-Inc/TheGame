@@ -29,6 +29,7 @@ class Player : public Entity {
         void updatePosition(float dt);
         void handleEvents(sf::Event event);
         void action(ActionType action, Direction direction) override;
+        void reset() override;
 
     private:
         int _directions;

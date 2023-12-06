@@ -14,6 +14,7 @@ class TileSprite : public Entity {
         void update(float dt) override;
         void handleEvents(sf::Event event);
         void action(ActionType action, Direction direction) override;
+        void reset() override;
 
     protected:
     private:

@@ -91,3 +91,7 @@ void TileSprite::handleEvents(sf::Event event)
 void TileSprite::action(ActionType action, Direction direction)
 {
 }
+
+void TileSprite::reset()
+{
+}

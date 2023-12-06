@@ -32,6 +32,7 @@ set(SRC
     src/entities/Player.cpp
     src/entities/Enemy.cpp
     src/entities/TileSprite.cpp
+    src/entities/Text.cpp
     src/renderer/Renderer.cpp
     src/renderer/Sfml.cpp
     src/manager/EntityManager.cpp
@@ -41,12 +42,14 @@ set(SRC
     src/scenes/DariusLight.cpp
     src/scenes/DariusDark.cpp
     src/scenes/Menu.cpp
+    src/scenes/GameOver.cpp
     src/map/Map.cpp
     src/music/MyMusic.cpp
     src/manager/MusicManager.cpp
     src/sound/MySound.cpp
     src/manager/SoundManager.cpp
     src/entities/P_button.cpp
+    src/entities/DariusButton.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})

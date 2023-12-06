@@ -4,6 +4,7 @@
 #include <Clock.hpp>
 #include <DariusDark.hpp>
 #include <DariusLight.hpp>
+#include <GameOver.hpp>
 #include <IRenderer.hpp>
 #include <Menu.hpp>
 #include <Scene.hpp>
@@ -23,6 +24,7 @@ class SceneManager {
     private:
         std::vector<std::shared_ptr<Scene>> _scenes;
         size_t _currentScene;
+        size_t _previousScene;
 };
 
 #endif /* !SCENEMANAGER_HPP_ */

@@ -39,7 +39,8 @@ typedef struct vec {
 enum SceneId {
     MENU,
     GAME1,
-    GAME2
+    GAME2,
+    GAMEOVER
 };
 
 enum ActionType {

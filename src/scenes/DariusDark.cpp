@@ -9,7 +9,7 @@ DariusDark::DariusDark(vec2f scale)
     _scaleFactor.y = scale.y;
 
     _tileSpriteId = _manager->getEntitiesSize();
-    _manager->addEntity(std::make_unique<TileSprite>(scale, (sf::Vector2f) {0, 0}, (sf::Vector2f) {1, 1}, "./assets/img/runner_background.png", sf::IntRect({0, 0, 1920, 1080})));
+    _manager->addEntity(std::make_unique<TileSprite>(scale, (sf::Vector2f) { 0, 0 }, (sf::Vector2f) { 1, 1 }, "./assets/img/runner_background.png", sf::IntRect({ 0, 0, 1920, 1080 })));
     _playerId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<Player>(scale, (sf::Vector2f) { 50, 900 }));
     _enemyId = _manager->getEntitiesSize();
@@ -27,7 +27,7 @@ void DariusDark::drawScene(IRenderer &renderer)
     _manager->drawEntities(renderer);
 }
 
-void DariusDark::updateScene(float dt, size_t &currentScene)
+void DariusDark::updateScene(float dt, size_t &currentScene, size_t &previousScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
     // static int _offset = 0;
@@ -63,7 +63,7 @@ void DariusDark::updateScene(float dt, size_t &currentScene)
     // _manager->updateEntities(dt);
 }
 
-void DariusDark::handleEvents(sf::Event event, size_t &currentScene)
+void DariusDark::handleEvents(sf::Event event, size_t &currentScene, size_t &previousScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
 

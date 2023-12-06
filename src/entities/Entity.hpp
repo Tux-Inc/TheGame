@@ -26,12 +26,14 @@ class Entity : public IEntity {
         sf::Vector2f getHitboxPosition() const;
         sf::Vector2f getPrevHitboxPosition() const;
         bool clicked() const override;
+        virtual void reset() = 0;
 
     protected:
         std::vector<sf::Drawable *> _drawables;
         std::vector<sf::Transformable *> _transformables;
         vec2f _scaleFactor;
         sf::Vector2f _pos;
+        sf::Vector2f _startPos;
         sf::Vector2f _hitboxPos;
         sf::Vector2f _prevHitboxPos;
         bool _debug;

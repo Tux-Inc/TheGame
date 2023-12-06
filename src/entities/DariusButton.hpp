@@ -1,5 +1,5 @@
-#ifndef P_BUTTON_HPP_
-#define P_BUTTON_HPP_
+#ifndef DARIUSBUTTON_HPP_
+#define DARIUSBUTTON_HPP_
 
 #include <Entity.hpp>
 #include <transform.h>
@@ -7,11 +7,11 @@
 class IEntity;
 class IRenderer;
 
-class P_button : public Entity {
+class DariusButton : public Entity {
     public:
-        P_button(vec2f scale, const std::string &text, sf::Vector2f centerPos, const std::string &texturePath);
-        // P_button(vec2f scale);
-        ~P_button();
+        DariusButton(vec2f scale, const std::string &text, sf::Vector2f centerPos, const std::string &texturePath);
+        // DariusButton(vec2f scale);
+        ~DariusButton();
         void update(float dt) override;
         void handleEvents(sf::Event event);
         void action(ActionType action, Direction direction) override;
@@ -27,7 +27,7 @@ class P_button : public Entity {
         sf::Font _font;
         std::string _text;
         int _offset;
-        size_t _P_buttonId;
+        size_t _dariusButtonId;
         sf::RectangleShape *_hitbox;
         size_t _hitboxId;
         size_t _textId;
@@ -37,4 +37,4 @@ class P_button : public Entity {
         bool _rotate;
 };
 
-#endif /* !P_button_HPP_ */
+#endif /* !DARIUSBUTTON_HPP_ */

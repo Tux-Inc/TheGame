@@ -15,6 +15,7 @@ class Map : public Entity {
         void update(float dt) override;
         void handleEvents(sf::Event event) override;
         void action(ActionType action, Direction direction) override;
+        void reset() override;
 
     private:
         std::vector<size_t> _tileIds;

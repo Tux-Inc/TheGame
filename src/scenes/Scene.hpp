@@ -2,9 +2,9 @@
 #define SCENE_HPP_
 
 #include <Clock.hpp>
+#include <EntityManager.hpp>
 #include <MusicManager.hpp>
 #include <SoundManager.hpp>
-#include <EntityManager.hpp>
 
 class IRenderer;
 class MusicManager;
@@ -15,9 +15,10 @@ class Scene {
     public:
         Scene() = default;
         virtual ~Scene() = 0;
-        virtual void updateScene(float dt, size_t &currentScene) = 0;
+        virtual void updateScene(float dt, size_t &currentScene, size_t &previousScene) = 0;
         virtual void drawScene(IRenderer &renderer) = 0;
-        virtual void handleEvents(sf::Event event, size_t &currentScene) = 0;
+        virtual void handleEvents(sf::Event event, size_t &currentScene, size_t &previousScene) = 0;
+        void resetScene();
 
     protected:
         EntityManager *_manager;

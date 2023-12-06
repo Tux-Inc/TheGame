@@ -30,7 +30,7 @@ void DariusLight::drawScene(IRenderer &renderer)
     _manager->drawEntities(renderer);
 }
 
-void DariusLight::updateScene(float dt, size_t &currentScene)
+void DariusLight::updateScene(float dt, size_t &currentScene, size_t &previousScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
 
@@ -48,7 +48,7 @@ void DariusLight::updateScene(float dt, size_t &currentScene)
     _manager->updateEntities(dt);
 }
 
-void DariusLight::handleEvents(sf::Event event, size_t &currentScene)
+void DariusLight::handleEvents(sf::Event event, size_t &currentScene, size_t &previousScene)
 {
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
 
@@ -57,23 +57,14 @@ void DariusLight::handleEvents(sf::Event event, size_t &currentScene)
     }
 
     if (_manager->collision(entities[_playerId], entities[_enemyId]) != IDLE) {
-        currentScene = MENU;
         this->resetScene();
+        previousScene = currentScene;
+        currentScene = GAMEOVER;
     }
 
     if (_manager->collision(entities[_playerId], entities[_tileSpriteId]) != IDLE) {
-        currentScene = MENU;
         this->resetScene();
+        previousScene = currentScene;
+        currentScene = GAMEOVER;
     }
-}
-
-void DariusLight::resetScene()
-{
-    std::cout << "Resetting scene" << std::endl;
-    std::cout << "Player id: " << _playerId << std::endl;
-    std::cout << "Enemy id: " << _enemyId << std::endl;
-    std::cout << "TileSprite id: " << _tileSpriteId << std::endl;
-    _manager->getEntity(_playerId)->setPosition((sf::Vector2f) { 100, 100 }, _playerId);
-    // _manager->getEntity(_enemyId)->setPosition((sf::Vector2f) { 300, 300 }, _enemyId);
-    // _manager->getEntity(_tileSpriteId)->setPosition((sf::Vector2f) { 1000, 100 }, _tileSpriteId);
 }

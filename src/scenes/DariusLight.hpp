@@ -2,13 +2,13 @@
 #define DARIUSLIGHT_HPP_
 
 #include <Clock.hpp>
-#include <TileSprite.hpp>
 #include <Enemy.hpp>
 #include <Map.hpp>
 #include <MyMusic.hpp>
 #include <MySound.hpp>
 #include <Player.hpp>
 #include <Scene.hpp>
+#include <TileSprite.hpp>
 
 class IRenderer;
 
@@ -16,10 +16,9 @@ class DariusLight : public Scene {
     public:
         DariusLight(vec2f scale);
         ~DariusLight();
-        void updateScene(float dt, size_t &currentScene) override;
+        void updateScene(float dt, size_t &currentScene, size_t &previousScene) override;
         void drawScene(IRenderer &renderer) override;
-        void handleEvents(sf::Event event, size_t &currentScene) override;
-        void resetScene();
+        void handleEvents(sf::Event event, size_t &currentScene, size_t &previousScene) override;
 
     private:
         size_t _playerId;
