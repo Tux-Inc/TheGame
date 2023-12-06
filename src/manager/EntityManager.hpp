@@ -23,7 +23,7 @@ class EntityManager {
         std::vector<std::shared_ptr<IEntity>> getEntities();
         size_t getEntitiesSize() const;
         Direction collision(std::shared_ptr<IEntity> e1, std::shared_ptr<IEntity> e2);
-        void action(size_t entityId, ActionType action, Direction direction);
+        void action(size_t entityId, ActionType action, Direction direction, const std::string &text);
 
     private:
         std::vector<std::shared_ptr<IEntity>> _entities;

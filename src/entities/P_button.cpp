@@ -104,7 +104,7 @@ void P_button::handleEvents(sf::Event event)
     }
 }
 
-void P_button::action(ActionType action, Direction direction)
+void P_button::action(ActionType action, Direction direction, const std::string &text)
 {
 }
 

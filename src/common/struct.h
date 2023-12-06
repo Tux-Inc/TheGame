@@ -45,7 +45,8 @@ enum SceneId {
 
 enum ActionType {
     STOP_MOVE,
-    START_MOVE
+    START_MOVE,
+    CHANGETEXT,
 };
 
 enum Direction {

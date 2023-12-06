@@ -22,7 +22,7 @@ class IEntity {
         virtual sf::RectangleShape &getHitbox() const = 0;
         virtual sf::Vector2f getHitboxPosition() const = 0;
         virtual sf::Vector2f getPrevHitboxPosition() const = 0;
-        virtual void action(ActionType action, Direction direction) = 0;
+        virtual void action(ActionType action, Direction direction, const std::string &text) = 0;
         virtual Direction getDirection() const = 0;
         virtual Direction getPreviousDirection() const = 0;
         virtual bool clicked() const = 0;

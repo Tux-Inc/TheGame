@@ -5,6 +5,11 @@ Menu::Menu(vec2f scale)
     _manager = new EntityManager(scale);
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
+    _active = false;
+    _start = std::chrono::steady_clock::now();
+    _end = std::chrono::steady_clock::now();
+    _nextTime = _end + std::chrono::seconds(1);
+    _elapsedTime = 0;
 
     sf::Vector2f dariusLightPos = (sf::Vector2f) { (float)((1920 / 8) * 2), (float)(1080 / 2) };
     sf::Vector2f dariusDarkPos = (sf::Vector2f) { (float)((1920 / 8) * 6), 1080 / 2 };
@@ -29,6 +34,12 @@ Menu::~Menu()
 
 void Menu::updateScene(float dt, size_t &currentScene, size_t &previousScene)
 {
+    if (!_active) {
+        _start = std::chrono::steady_clock::now();
+        _end = std::chrono::steady_clock::now();
+        _nextTime = _end + std::chrono::seconds(1);
+        _active = true;
+    }
     _manager->updateEntities(dt);
 }
 

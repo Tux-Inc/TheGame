@@ -221,7 +221,7 @@ void Player::updatePosition(float dt)
     }
 }
 
-void Player::action(ActionType action, Direction direction)
+void Player::action(ActionType action, Direction direction, const std::string &text)
 {
     _actions[action] = true;
     switch (action) {

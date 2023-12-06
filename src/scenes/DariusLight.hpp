@@ -8,6 +8,7 @@
 #include <MySound.hpp>
 #include <Player.hpp>
 #include <Scene.hpp>
+#include <Text.hpp>
 #include <TileSprite.hpp>
 
 class IRenderer;
@@ -24,6 +25,8 @@ class DariusLight : public Scene {
         size_t _playerId;
         size_t _enemyId;
         size_t _tileSpriteId;
+        size_t _timeTitleId;
+        size_t _timeId;
 };
 
 #endif /* !DARIUSLIGHT_HPP_ */

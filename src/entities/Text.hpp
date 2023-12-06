@@ -14,7 +14,7 @@ class Text : public Entity {
         ~Text();
         void update(float dt) override;
         void handleEvents(sf::Event event);
-        void action(ActionType action, Direction direction) override;
+        void action(ActionType action, Direction direction, const std::string &text) override;
         void setScene(int scene);
         void reset() override;
 
@@ -24,6 +24,7 @@ class Text : public Entity {
         sf::Text *_sfText;
         sf::Font _font;
         std::string _text;
+        std::string _initialText;
         int _offset;
         size_t _TextId;
         size_t _hitboxId;

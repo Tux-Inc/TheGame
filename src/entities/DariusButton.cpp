@@ -116,7 +116,7 @@ void DariusButton::handleEvents(sf::Event event)
     }
 }
 
-void DariusButton::action(ActionType action, Direction direction)
+void DariusButton::action(ActionType action, Direction direction, const std::string &text)
 {
 }
 

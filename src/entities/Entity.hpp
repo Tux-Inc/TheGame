@@ -20,7 +20,7 @@ class Entity : public IEntity {
         sf::IntRect getRect(size_t assetId) const override;
         Direction intersects(std::shared_ptr<IEntity> other) override;
         sf::RectangleShape &getHitbox() const;
-        virtual void action(ActionType action, Direction direction) = 0;
+        virtual void action(ActionType action, Direction direction, const std::string &text) = 0;
         Direction getDirection() const override;
         Direction getPreviousDirection() const override;
         sf::Vector2f getHitboxPosition() const;

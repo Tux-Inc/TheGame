@@ -28,7 +28,7 @@ class Player : public Entity {
         void update(float dt) override;
         void updatePosition(float dt);
         void handleEvents(sf::Event event);
-        void action(ActionType action, Direction direction) override;
+        void action(ActionType action, Direction direction, const std::string &text) override;
         void reset() override;
 
     private:

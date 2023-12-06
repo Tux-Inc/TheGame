@@ -14,7 +14,7 @@ class DariusButton : public Entity {
         ~DariusButton();
         void update(float dt) override;
         void handleEvents(sf::Event event);
-        void action(ActionType action, Direction direction) override;
+        void action(ActionType action, Direction direction, const std::string &text) override;
         void setScene(int scene);
         void reset() override;
 

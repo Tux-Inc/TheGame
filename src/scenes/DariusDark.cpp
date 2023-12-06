@@ -7,6 +7,11 @@ DariusDark::DariusDark(vec2f scale)
     _soundManager = new SoundManager(50.0f);
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
+    _start = std::chrono::steady_clock::now();
+    _end = std::chrono::steady_clock::now();
+    _nextTime = _end + std::chrono::seconds(1);
+    _active = false;
+    _elapsedTime = 0;
 
     _tileSpriteId = _manager->getEntitiesSize();
     _manager->addEntity(std::make_unique<TileSprite>(scale, (sf::Vector2f) { 0, 0 }, (sf::Vector2f) { 1, 1 }, "./assets/img/runner_background.png", sf::IntRect({ 0, 0, 1920, 1080 })));
@@ -32,7 +37,12 @@ void DariusDark::updateScene(float dt, size_t &currentScene, size_t &previousSce
     std::vector<std::shared_ptr<IEntity>> entities = _manager->getEntities();
     // static int _offset = 0;
     // sf::IntRect rect = entities[_enemyId]->getRect(_enemyId);
-
+    if (!_active) {
+        _start = std::chrono::steady_clock::now();
+        _end = std::chrono::steady_clock::now();
+        _nextTime = _end + std::chrono::seconds(1);
+        _active = true;
+    }
     // Change rect of tileSprite every 0.1s to make it animated
     if (dt > 1) {
         sf::IntRect _rect = entities[_tileSpriteId]->getRect(_tileSpriteId);

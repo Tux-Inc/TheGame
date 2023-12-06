@@ -5,6 +5,12 @@ GameOver::GameOver(vec2f scale)
     _manager = new EntityManager(scale);
     _scaleFactor.x = scale.x;
     _scaleFactor.y = scale.y;
+    _active = false;
+
+    _start = std::chrono::steady_clock::now();
+    _end = std::chrono::steady_clock::now();
+    _nextTime = _end + std::chrono::seconds(1);
+    _elapsedTime = 0;
 
     sf::Vector2f restartPos = (sf::Vector2f) { static_cast<float>((1920 / 2)), static_cast<float>((1080 / 2) - 65) };
     sf::Vector2f menuPos = (sf::Vector2f) { static_cast<float>((1920 / 2)), static_cast<float>((1080 / 2) + 65) };
@@ -23,6 +29,12 @@ GameOver::~GameOver()
 
 void GameOver::updateScene(float dt, size_t &currentScene, size_t &previousScene)
 {
+    if (!_active) {
+        _start = std::chrono::steady_clock::now();
+        _end = std::chrono::steady_clock::now();
+        _nextTime = _end + std::chrono::seconds(1);
+        _active = true;
+    }
     _manager->updateEntities(dt);
 }
 

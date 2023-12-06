@@ -26,6 +26,11 @@ class Scene {
         SoundManager *_soundManager;
         sf::Vector2f _scaleFactor;
         int *_currentScene;
+        std::chrono::steady_clock::time_point _start;
+        std::chrono::steady_clock::time_point _end;
+        std::chrono::steady_clock::time_point _nextTime;
+        bool _active;
+        int _elapsedTime;
 };
 
 #endif /* !SCENE_HPP_ */

@@ -28,7 +28,7 @@ class Enemy : public Entity {
         ~Enemy();
         void update(float dt) override;
         void handleEvents(sf::Event event);
-        void action(ActionType action, Direction direction) override;
+        void action(ActionType action, Direction direction, const std::string &text) override;
         void reset() override;
 
     private:

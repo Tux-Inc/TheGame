@@ -86,7 +86,7 @@ void Enemy::handleEvents(sf::Event event)
     }
 }
 
-void Enemy::action(ActionType action, Direction direction)
+void Enemy::action(ActionType action, Direction direction, const std::string &text)
 {
     switch (action) {
     case STOP_MOVE:

@@ -50,7 +50,7 @@ void Map::handleEvents(sf::Event event)
 {
 }
 
-void Map::action(ActionType action, Direction direction)
+void Map::action(ActionType action, Direction direction, const std::string &text)
 {
 }
 

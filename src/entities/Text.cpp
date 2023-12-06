@@ -8,6 +8,7 @@ Text::Text(vec2f scale, const std::string &text, sf::Vector2f centerPos, sf::Col
     _debug = false;
     _collides = true;
     _text = text;
+    _initialText = text;
     _hover = false;
     _startPos = centerPos;
 
@@ -60,12 +61,24 @@ void Text::handleEvents(sf::Event event)
 {
 }
 
-void Text::action(ActionType action, Direction direction)
+void Text::action(ActionType action, Direction direction, const std::string &text)
 {
+    switch (action) {
+    case CHANGETEXT: {
+        _text = text;
+        _sfText->setString(text);
+        break;
+    }
+
+    default:
+        break;
+    }
 }
 
 void Text::reset()
 {
     _clicked = false;
     _hover = false;
+    _text = _initialText;
+    _sfText->setString(_initialText);
 }
