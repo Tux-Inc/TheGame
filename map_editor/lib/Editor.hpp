@@ -234,7 +234,9 @@ class Editor {
             _toolbox.Setup(_toolWindow);
 
             _map = new Map(46, 24);
-            _map->SetMapPosition(0, 0);
+
+            // Center map in map window
+            _map->SetMapPosition((_mapWindow.getSize().x / 2) - (_map->GetLayers()[0]->GetWidth() * 12 / 2), (_mapWindow.getSize().y / 2) - (_map->GetLayers()[0]->GetHeight() * 12 / 2));
 
             std::cout << "Map window position: " << mapWindowPosition.x << ", " << mapWindowPosition.y << std::endl;
             std::cout << "Tool window position: " << _toolWindow.getPosition().x << ", " << _toolWindow.getPosition().y << std::endl;
