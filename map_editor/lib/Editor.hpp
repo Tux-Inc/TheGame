@@ -18,19 +18,70 @@
 class Layer {
 
     public:
-        Layer(Tile::Type type, size_t width, size_t height)
+        Layer(Tile::Type type, size_t width, size_t height, std::string filePath)
         {
             _type = type;
             _width = width;
             _height = height;
 
-            for (size_t y = 0; y < _height; y++) {
-                std::vector<Tile *> row;
-                for (size_t x = 0; x < _width; x++) {
-                    row.push_back(new Tile(type, new sf::Sprite()));
+            _tiles = FileToTiles(filePath, type);
+            _texture.loadFromFile("../assets/img/map_futuristique.png");
+            if (!_texture.loadFromFile("../assets/img/map_futuristique.png"))
+                std::cout << "Error loading texture" << std::endl;
+        }
+
+        std::vector<std::vector<Tile *>> FileToTiles(std::string filePath, Tile::Type type)
+        {
+            std::vector<std::vector<Tile *>> tiles;
+            std::ifstream file(filePath);
+
+            if (file.is_open()) {
+                std::string line;
+                while (getline(file, line)) {
+                    std::vector<Tile *> row;
+                    for (char c : line) {
+                        Tile *tile = new Tile(type, new sf::Sprite(), c);
+                        tile->GetSprite()->setTexture(_texture, false);
+                        tile->GetSprite()->setTextureRect(GetRectFromChar(c, type));
+                        tile->GetSprite()->setScale(0.25f, 0.25f);
+                        row.push_back(tile);
+                    }
+                    tiles.push_back(row);
                 }
-                _tiles.push_back(row);
             }
+            file.close();
+            return tiles;
+        }
+
+        sf::IntRect GetRectFromChar(char c, Tile::Type type)
+        {
+            std::ifstream file("config.me");
+            if (!file.is_open())
+                std::cerr << "Failed to open config file" << std::endl;
+            std::string line;
+
+            while (std::getline(file, line)) {
+                std::stringstream ss(line);
+                std::string line;
+                std::vector<std::string> tokens;
+                std::string delimiter = " ";
+                std::string token;
+
+                while (std::getline(ss, token, ' '))
+                    tokens.push_back(token);
+
+                if (tokens[0] == "floor" && tokens[3][0] == c && type == Tile::Type::FLOOR)
+                    return sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), 48, 48);
+                if (tokens[0] == "wall" && tokens[3][0] == c && type == Tile::Type::WALL)
+                    return sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), 48, 48);
+                if (tokens[0] == "object" && tokens[3][0] == c && type == Tile::Type::OBJECT)
+                    return sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), 48, 48);
+
+                tokens.clear();
+            }
+
+            file.close();
+            return sf::IntRect(48, 0, 48, 48);
         }
 
         ~Layer()
@@ -55,10 +106,13 @@ class Layer {
         void SetPosition(sf::Vector2f pos)
         {
             _pos = pos;
-            for (size_t y = 0; y < _height; y++) {
-                for (size_t x = 0; x < _width; x++) {
-                    _tiles[y][x]->SetPosition(sf::Vector2f(pos.x + (x * 16), pos.y + (y * 16)));
+            for (auto row : _tiles) {
+                for (auto tile : row) {
+                    tile->SetPosition(pos);
+                    pos.x += 12;
                 }
+                pos.x = _pos.x;
+                pos.y += 12;
             }
         }
 
@@ -69,6 +123,7 @@ class Layer {
         size_t _width;
         size_t _height;
         sf::Vector2f _pos;
+        sf::Texture _texture;
 };
 
 class Map {
@@ -77,9 +132,9 @@ class Map {
         {
             _width = width;
             _height = height;
-            _layers.push_back(new Layer(Tile::FLOOR, _width, _height));
-            _layers.push_back(new Layer(Tile::WALL, _width, _height));
-            _layers.push_back(new Layer(Tile::OBJECT, _width, _height));
+            _layers.push_back(new Layer(Tile::Type::FLOOR, _width, _height, "../assets/maps/map1/layers1"));
+            _layers.push_back(new Layer(Tile::Type::WALL, _width, _height, "../assets/maps/map1/layers2"));
+            _layers.push_back(new Layer(Tile::Type::OBJECT, _width, _height, "../assets/maps/map1/layers3"));
             SetMapPosition(50, 50);
         }
 
@@ -114,6 +169,11 @@ class Map {
             }
         }
 
+        sf::Vector2f GetMapPosition()
+        {
+            return _layers[0]->GetPosition();
+        }
+
         void Draw(sf::RenderWindow &window)
         {
             window.draw(*_background);
@@ -124,11 +184,35 @@ class Map {
                     }
                 }
             }
+
+            // // Draw floor layer
+            // for (size_t y = 0; y < _layers[Tile::Type::FLOOR]->GetHeight(); y++) {
+            //     for (size_t x = 0; x < _layers[Tile::Type::FLOOR]->GetWidth(); x++) {
+            //         window.draw(*_layers[Tile::Type::FLOOR]->GetTile(x, y)->GetSprite());
+            //     }
+            // }
+
+            // // Draw object layer
+            // for (size_t y = 0; y < _layers[Tile::Type::OBJECT]->GetHeight(); y++) {
+            //     for (size_t x = 0; x < _layers[Tile::Type::OBJECT]->GetWidth(); x++) {
+            //         window.draw(*_layers[Tile::Type::OBJECT]->GetTile(x, y)->GetSprite());
+            //     }
+            // }
+
+            // // Draw wall layer
+            // for (size_t y = 0; y < _layers[Tile::Type::WALL]->GetHeight(); y++) {
+            //     for (size_t x = 0; x < _layers[Tile::Type::WALL]->GetWidth(); x++) {
+            //         window.draw(*_layers[Tile::Type::WALL]->GetTile(x, y)->GetSprite());
+            //     }
+            // }
         }
+
+        std::vector<Layer *> GetLayers() { return _layers; }
 
     protected:
     private:
         std::vector<Layer *> _layers;
+        std::vector<std::string> _tags;
         size_t _width;
         size_t _height;
         sf::RectangleShape *_background;
@@ -149,8 +233,10 @@ class Editor {
 
             _toolbox.Setup(_toolWindow);
 
-            _map = new Map(90, 24);
-            _map->SetMapPosition(0, 0);
+            _map = new Map(46, 24);
+
+            // Center map in map window
+            _map->SetMapPosition((_mapWindow.getSize().x / 2) - (_map->GetLayers()[0]->GetWidth() * 12 / 2), (_mapWindow.getSize().y / 2) - (_map->GetLayers()[0]->GetHeight() * 12 / 2));
 
             std::cout << "Map window position: " << mapWindowPosition.x << ", " << mapWindowPosition.y << std::endl;
             std::cout << "Tool window position: " << _toolWindow.getPosition().x << ", " << _toolWindow.getPosition().y << std::endl;
@@ -171,25 +257,117 @@ class Editor {
 
         void ClearWindow(sf::RenderWindow &window, sf::Color color = sf::Color::Black) { window.clear(color); }
 
+        void CreateFile()
+        {
+            std::ofstream file("../assets/maps/map1/temp");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::WALL]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::WALL]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::WALL]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+
+            file.close();
+        }
+
+        void SaveToFile()
+        {
+            std::ofstream file("../assets/maps/map1/layers1");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::FLOOR]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::FLOOR]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::FLOOR]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+
+            file.close();
+
+            file.open("../assets/maps/map1/layers2");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::WALL]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::WALL]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::WALL]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+
+            file.close();
+
+            file.open("../assets/maps/map1/layers3");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::OBJECT]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::OBJECT]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::OBJECT]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+            file.close();
+        }
+
         void HandleEvents(sf::RenderWindow &window)
         {
             while (window.pollEvent(_event)) {
                 if (_event.type == sf::Event::Closed) {
                     _mapWindow.close();
                     _toolWindow.close();
+                    // CreateFile();
+                    SaveToFile();
                 }
                 if (_event.type == sf::Event::KeyPressed) {
                     if (_event.key.code == sf::Keyboard::Escape) {
                         _mapWindow.close();
                         _toolWindow.close();
+                        // CreateFile();
+                        SaveToFile();
                     }
                 }
                 if (_event.type == sf::Event::MouseButtonPressed) {
                     if (_event.mouseButton.button == sf::Mouse::Left) {
-                        _toolbox.GetSelectedTileOnClick(window);
+                        if (_toolWindow.hasFocus()) {
+                            _toolbox.UpdateSelectedTileOnClick(window);
+                        }
+                    }
+                    if (_event.mouseButton.button == sf::Mouse::Left) {
+                        if (_mapWindow.hasFocus()) {
+                            ReplaceTileWithToolboxTile(window);
+                        }
                     }
                 }
             }
+        }
+
+        void ReplaceTileWithToolboxTile(sf::RenderWindow &window)
+        {
+            // Check if toolbox has a selected tile
+            if (_toolbox.GetSelectedTile() == nullptr)
+                return;
+
+            // Get mouse position relative to map
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            sf::Vector2f mapPos = _map->GetMapPosition();
+            sf::Vector2f tilePos = sf::Vector2f(mousePos.x - mapPos.x, mousePos.y - mapPos.y);
+            size_t tileSize = 12;
+            size_t x = tilePos.x / tileSize;
+            size_t y = tilePos.y / tileSize;
+            Tile *tile = _toolbox.GetSelectedTile();
+            std::cout << "Replacing tile at " << x << ", " << y << std::endl;
+
+            // Check if clicking out of bounds
+            if (x >= _map->GetLayers()[0]->GetWidth() || y >= _map->GetLayers()[0]->GetHeight())
+                return;
+
+            // Replace tile
+            _map->GetLayers()[tile->GetType()]->GetTile(x, y)->GetSprite()->setTextureRect(tile->GetSprite()->getTextureRect());
+            _map->GetLayers()[tile->GetType()]->GetTile(x, y)->SetTag(tile->GetTag());
         }
 
         void Run()
