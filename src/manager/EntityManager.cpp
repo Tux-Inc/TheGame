@@ -52,7 +52,7 @@ Direction EntityManager::collision(std::shared_ptr<IEntity> e1, std::shared_ptr<
     return e1->intersects(e2);
 }
 
-void EntityManager::action(size_t entityId, ActionType action, Direction direction)
+void EntityManager::action(size_t entityId, ActionType action, Direction direction, const std::string &text)
 {
-    _entities[entityId]->action(action, direction);
+    _entities[entityId]->action(action, direction, text);
 }

@@ -23,12 +23,13 @@ class Player : public Entity {
         };
 
     public:
-        Player(vec2f scale);
+        Player(vec2f scale, sf::Vector2f pos);
         ~Player();
         void update(float dt) override;
         void updatePosition(float dt);
         void handleEvents(sf::Event event);
-        void action(ActionType action, Direction direction) override;
+        void action(ActionType action, Direction direction, const std::string &text) override;
+        void reset() override;
 
     private:
         int _directions;

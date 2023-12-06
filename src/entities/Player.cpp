@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(vec2f scale)
+Player::Player(vec2f scale, sf::Vector2f pos)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
@@ -22,9 +22,10 @@ Player::Player(vec2f scale)
     _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
     _sprite = new sf::Sprite(*_texture);
 
-    _pos = scaleVector((sf::Vector2f) { 100, 100 }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { 132.5, 132.5 }, _scaleFactor);
-    _prevHitboxPos = scaleVector((sf::Vector2f) { 132.5, 132.5 }, _scaleFactor);
+    _pos = scaleVector(pos, _scaleFactor);
+    _startPos = pos;
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(pos.x + 32.5), (float)(pos.y + 32.5) }, _scaleFactor);
+    _prevHitboxPos = scaleVector((sf::Vector2f) { (float)(pos.x + 32.5), (float)(pos.y + 32.5) }, _scaleFactor);
     _sprite->setPosition(_pos);
     _sprite->setTextureRect(_rect);
     _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
@@ -220,7 +221,7 @@ void Player::updatePosition(float dt)
     }
 }
 
-void Player::action(ActionType action, Direction direction)
+void Player::action(ActionType action, Direction direction, const std::string &text)
 {
     _actions[action] = true;
     switch (action) {
@@ -238,4 +239,39 @@ void Player::action(ActionType action, Direction direction)
     default:
         break;
     }
+}
+
+void Player::reset()
+{
+    _direction = IDLE;
+    _dir = RIGHT;
+    _dirWhenCollide = RIGHT;
+    _prevDir = IDLE;
+    _dirs = std::vector<bool>(4, false);
+    _actions = std::vector<bool>(MAX_ACTIONS, false);
+    _dirs[_dir - 8] = true;
+    _debug = false;
+
+    _offset = 0;
+    _moving = false;
+    _walking = false;
+    _collides = true;
+
+    _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
+
+    _pos = scaleVector(_startPos, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(_startPos.x + 32.5), (float)(_startPos.y + 32.5) }, _scaleFactor);
+    _prevHitboxPos = scaleVector((sf::Vector2f) { (float)(_startPos.x + 32.5), (float)(_startPos.y + 32.5) }, _scaleFactor);
+    _sprite->setPosition(_pos);
+    _sprite->setTextureRect(_rect);
+    _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
+
+    _hitbox->setFillColor(sf::Color::Transparent);
+    _hitbox->setOutlineColor(sf::Color::Green);
+    _hitbox->setPosition(_hitboxPos);
+    _hitbox->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
+
+    _velocity.x = 0;
+    _velocity.y = 0;
+    _speed = 1.5 * _scaleFactor.x;
 }

@@ -4,9 +4,14 @@
 build
 cmake-build-debug
 editor
+vgcore.*
 
 #Binaries
 game
+TheGame
+
+#Valgrind
+vgcore.*
 
 # Prerequisites
 *.d

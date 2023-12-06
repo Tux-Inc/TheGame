@@ -1,6 +1,6 @@
 #include <Enemy.hpp>
 
-Enemy::Enemy(vec2f scale)
+Enemy::Enemy(vec2f scale, sf::Vector2f pos)
 {
     _scaleFactor = scale;
     _texture = new sf::Texture();
@@ -12,12 +12,12 @@ Enemy::Enemy(vec2f scale)
     _moving = true;
     _walking = true;
     _collides = false;
-
+    _startPos = pos;
     _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
     _sprite = new sf::Sprite(*_texture);
 
-    _pos = scaleVector((sf::Vector2f) { 300, 300 }, _scaleFactor);
-    _hitboxPos = scaleVector((sf::Vector2f) { 332.5, 332.5 }, _scaleFactor);
+    _pos = scaleVector(pos, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(pos.x + 32.5), (float)(pos.y + 32.5) }, _scaleFactor);
 
     _sprite->setPosition(_pos);
     _sprite->setTextureRect(_rect);
@@ -86,19 +86,45 @@ void Enemy::handleEvents(sf::Event event)
     }
 }
 
-void Enemy::action(ActionType action, Direction direction)
+void Enemy::action(ActionType action, Direction direction, const std::string &text)
 {
     switch (action) {
-    case STOP_MOVE: {
+    case STOP_MOVE:
         _moving = false;
         break;
-    }
-    case START_MOVE: {
+    case START_MOVE:
         _moving = true;
         break;
-    }
-
     default:
         break;
     }
+}
+
+void Enemy::reset()
+{
+    _dir = RIGHT;
+    _direction = IDLE;
+
+    _offset = 0;
+    _moving = true;
+    _walking = true;
+    _collides = false;
+
+    _rect = sf::IntRect({ _offset, 128 * _dir, 128, 128 });
+
+    _pos = scaleVector(_startPos, _scaleFactor);
+    _hitboxPos = scaleVector((sf::Vector2f) { (float)(_startPos.x + 32.5), (float)(_startPos.y + 32.5) }, _scaleFactor);
+
+    _sprite->setPosition(_pos);
+    _sprite->setTextureRect(_rect);
+    _sprite->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
+
+    _hitbox->setFillColor(sf::Color::Transparent);
+    _hitbox->setOutlineColor(sf::Color::Green);
+    _hitbox->setPosition(_hitboxPos);
+    _hitbox->setScale((sf::Vector2f) { _scaleFactor.x, _scaleFactor.y });
+
+    _velocity.x = 1;
+    _velocity.y = 0;
+    _speed = 1.5 * _scaleFactor.x;
 }

@@ -24,11 +24,12 @@ class Enemy : public Entity {
         };
 
     public:
-        Enemy(vec2f scale);
+        Enemy(vec2f scale, sf::Vector2f pos);
         ~Enemy();
         void update(float dt) override;
         void handleEvents(sf::Event event);
-        void action(ActionType action, Direction direction) override;
+        void action(ActionType action, Direction direction, const std::string &text) override;
+        void reset() override;
 
     private:
         int _directions;
