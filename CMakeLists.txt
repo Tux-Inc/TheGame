@@ -31,7 +31,7 @@ set(SRC
     src/entities/Entity.cpp
     src/entities/Player.cpp
     src/entities/Enemy.cpp
-    src/entities/Cone.cpp
+    src/entities/TileSprite.cpp
     src/renderer/Renderer.cpp
     src/renderer/Sfml.cpp
     src/manager/EntityManager.cpp

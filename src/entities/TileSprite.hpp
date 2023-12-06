@@ -1,15 +1,16 @@
-#ifndef CONE_HPP_
-#define CONE_HPP_
+#ifndef TILESPRITE_HPP_
+#define TILESPRITE_HPP_
 
 #include <Entity.hpp>
 #include <transform.h>
 
 class IEntity;
 
-class Cone : public Entity {
+class TileSprite : public Entity {
     public:
-        Cone(vec2f scale, sf::Vector2f pos);
-        ~Cone();
+        TileSprite(vec2f scale, sf::Vector2f pos);
+        TileSprite(vec2f scale, sf::Vector2f pos, sf::Vector2f rescale, std::string texturePath, sf::IntRect rect);
+        ~TileSprite();
         void update(float dt) override;
         void handleEvents(sf::Event event);
         void action(ActionType action, Direction direction) override;
@@ -22,4 +23,4 @@ class Cone : public Entity {
         size_t _spriteId;
 };
 
-#endif /* !CONE_HPP_ */
+#endif /* !TILESPRITE_HPP_ */
