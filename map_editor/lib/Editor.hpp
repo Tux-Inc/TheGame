@@ -42,7 +42,7 @@ class Layer {
                     for (char c : line) {
                         Tile *tile = new Tile(type, new sf::Sprite(), c);
                         tile->GetSprite()->setTexture(_texture, false);
-                        tile->GetSprite()->setTextureRect(GetRectFromChar(c));
+                        tile->GetSprite()->setTextureRect(GetRectFromChar(c, type));
                         tile->GetSprite()->setScale(0.25f, 0.25f);
                         row.push_back(tile);
                     }
@@ -53,7 +53,7 @@ class Layer {
             return tiles;
         }
 
-        sf::IntRect GetRectFromChar(char c)
+        sf::IntRect GetRectFromChar(char c, Tile::Type type)
         {
             std::ifstream file("config.me");
             if (!file.is_open())
@@ -70,13 +70,11 @@ class Layer {
                 while (std::getline(ss, token, ' '))
                     tokens.push_back(token);
 
-                if (tokens[0] == "floor" && tokens[3][0] == c)
+                if (tokens[0] == "floor" && tokens[3][0] == c && type == Tile::Type::FLOOR)
                     return sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), 48, 48);
-                if (tokens[0] == "wall" && tokens[3][0] == c) {
-                    std::cout << "Wall found" << std::endl;
+                if (tokens[0] == "wall" && tokens[3][0] == c && type == Tile::Type::WALL)
                     return sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), 48, 48);
-                }
-                if (tokens[0] == "object" && tokens[3][0] == c)
+                if (tokens[0] == "object" && tokens[3][0] == c && type == Tile::Type::OBJECT)
                     return sf::IntRect(std::stoi(tokens[1]), std::stoi(tokens[2]), 48, 48);
 
                 tokens.clear();
@@ -235,7 +233,7 @@ class Editor {
 
             _toolbox.Setup(_toolWindow);
 
-            _map = new Map(90, 24);
+            _map = new Map(46, 24);
             _map->SetMapPosition(0, 0);
 
             std::cout << "Map window position: " << mapWindowPosition.x << ", " << mapWindowPosition.y << std::endl;
@@ -257,17 +255,77 @@ class Editor {
 
         void ClearWindow(sf::RenderWindow &window, sf::Color color = sf::Color::Black) { window.clear(color); }
 
+        void CreateFile()
+        {
+            std::ofstream file("../assets/maps/map1/temp");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::WALL]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::WALL]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::WALL]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+
+            file.close();
+        }
+
+        void SaveToFile()
+        {
+            std::ofstream file("../assets/maps/map1/layers1");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::FLOOR]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::FLOOR]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::FLOOR]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+
+            file.close();
+
+            file.open("../assets/maps/map1/layers2");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::WALL]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::WALL]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::WALL]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+
+            file.close();
+
+            file.open("../assets/maps/map1/layers3");
+            if (!file.is_open())
+                std::cerr << "Failed to open file" << std::endl;
+
+            for (size_t y = 0; y < _map->GetLayers()[Tile::Type::OBJECT]->GetHeight(); y++) {
+                for (size_t x = 0; x < _map->GetLayers()[Tile::Type::OBJECT]->GetWidth(); x++) {
+                    file << _map->GetLayers()[Tile::Type::OBJECT]->GetTile(x, y)->GetTag();
+                }
+                file << std::endl;
+            }
+            file.close();
+        }
+
         void HandleEvents(sf::RenderWindow &window)
         {
             while (window.pollEvent(_event)) {
                 if (_event.type == sf::Event::Closed) {
                     _mapWindow.close();
                     _toolWindow.close();
+                    // CreateFile();
+                    SaveToFile();
                 }
                 if (_event.type == sf::Event::KeyPressed) {
                     if (_event.key.code == sf::Keyboard::Escape) {
                         _mapWindow.close();
                         _toolWindow.close();
+                        // CreateFile();
+                        SaveToFile();
                     }
                 }
                 if (_event.type == sf::Event::MouseButtonPressed) {
@@ -307,6 +365,7 @@ class Editor {
 
             // Replace tile
             _map->GetLayers()[tile->GetType()]->GetTile(x, y)->GetSprite()->setTextureRect(tile->GetSprite()->getTextureRect());
+            _map->GetLayers()[tile->GetType()]->GetTile(x, y)->SetTag(tile->GetTag());
         }
 
         void Run()
